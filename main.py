@@ -28,7 +28,8 @@ def save_key_set_dialog(sui, set_dialog):
     save_config(edit_ak, edit_sk)
     ak = edit_ak
     sk = edit_sk
-    set_dialog.close()
+    # set dialog return value
+    set_dialog.accept()
 
 
 def show_set_dialog():
@@ -36,7 +37,9 @@ def show_set_dialog():
     sui = set_ui.Ui_Dialog()
     sui.setupUi(set_dialog)
     sui.pushButton.clicked.connect(partial(save_key_set_dialog, sui, set_dialog))
-    set_dialog.show()
+    exit_code = set_dialog.exec()
+    if exit_code != QtWidgets.QDialog.Accepted:
+        sys.exit(0)
 
 
 def init():
