@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>七牛个人网盘</string>
+   <string>七牛个人网盘 v1.0</string>
   </property>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
@@ -45,6 +45,29 @@
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>651</width>
+     <height>351</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>仓库1</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>仓库2</string>
+    </attribute>
+   </widget>
   </widget>
  </widget>
  <resources/>
