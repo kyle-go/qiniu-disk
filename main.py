@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import sys
 from functools import partial
@@ -9,7 +9,7 @@ from PyQt5.QtGui import QIcon
 
 import main_ui
 import set_ui
-from utils import get_config, save_config
+from utils.utils import get_config, save_config
 
 main_dialog = None
 ak = None
