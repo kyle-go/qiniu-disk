@@ -11,7 +11,7 @@ import main_ui
 import set_ui
 from utils import get_config, save_config
 
-main_Dialog = None
+main_dialog = None
 ak = None
 sk = None
 
@@ -22,7 +22,7 @@ def save_key_set_dialog(sui, set_dialog):
     edit_ak = sui.lineEdit_ak.text()
     edit_sk = sui.lineEdit_sk.text()
     if edit_ak == "" or edit_sk == "":
-        QtWidgets.QMessageBox.information(main_Dialog, '警告', "AccessKey和SecretKey都不能为空哦！")
+        QtWidgets.QMessageBox.information(main_dialog, '警告', "AccessKey和SecretKey都不能为空哦！")
         return
 
     save_config(edit_ak, edit_sk)
@@ -33,7 +33,7 @@ def save_key_set_dialog(sui, set_dialog):
 
 
 def show_set_dialog():
-    set_dialog = QtWidgets.QDialog(main_Dialog, flags=QtCore.Qt.WindowCloseButtonHint)
+    set_dialog = QtWidgets.QDialog(main_dialog, flags=QtCore.Qt.WindowCloseButtonHint)
     sui = set_ui.Ui_Dialog()
     sui.setupUi(set_dialog)
     sui.pushButton.clicked.connect(partial(save_key_set_dialog, sui, set_dialog))
@@ -54,7 +54,7 @@ def init():
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog(flags=QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowCloseButtonHint)
-    main_Dialog = Dialog
+    main_dialog = Dialog
     Dialog.setWindowIcon(QIcon("favicon.ico"))
     ui = main_ui.Ui_Dialog()
     ui.setupUi(Dialog)
