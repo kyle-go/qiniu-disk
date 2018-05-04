@@ -41,7 +41,7 @@
     <string>确定</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="lineEdit_ak">
    <property name="geometry">
     <rect>
      <x>80</x>
@@ -51,7 +51,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="lineEdit_sk">
    <property name="geometry">
     <rect>
      <x>80</x>
