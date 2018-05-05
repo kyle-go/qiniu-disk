@@ -102,7 +102,7 @@
     <string>输入文件前缀搜索</string>
    </property>
   </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
+  <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -111,7 +111,11 @@
      <height>281</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout"/>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

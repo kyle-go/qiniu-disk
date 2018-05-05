@@ -100,12 +100,12 @@ def init_bucket(bucket):
     for dir in files['commonPrefixes']:
         print("DIR:" + dir)
         sub_dialog = create_icon_sub_dialog(True, dir[:-1])
-        mui.gridLayout.addWidget(sub_dialog)
+        mui.horizontalLayout.addWidget(sub_dialog)
     # 文件
     for f in files['items']:
         print("FILE:" + f['key'])
         sub_dialog = create_icon_sub_dialog(False, f['key'])
-        mui.gridLayout.addWidget(sub_dialog)
+        mui.horizontalLayout.addWidget(sub_dialog)
 
 
 def init():
