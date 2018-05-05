@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Index</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+	<script src="qwebchannel.js"></script>
+	<script>
+		function test(){
+			new QWebChannel(qt.webChannelTransport, function (channel) {
+				window.handler = channel.objects.handler;
+				window.handler.test("pppaaa", function(r){alert(r);});
+			});
+		}
+		
+		function completeAndReturnName() {
+			alert("from js.");
+			return "abc"
+		}
+	</script>
+</head>
+
+<body>
+    <div>
+        <input type="button" onclick="test()">
+    </div>
+</body>
+
+</html>

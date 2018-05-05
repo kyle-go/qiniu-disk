@@ -1,39 +1,47 @@
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 from functools import partial
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtSignal
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebChannel import QWebChannel
 
-import main_ui
 import set_ui
-import icon_ui
 from utils.utils import get_config, save_config
 from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files
 
-main_dialog = None
-mui = None
+web_view = None
 ak = None
 sk = None
 cur_marker = ""
 cur_prefix = ""
+channel = None
+handler = None
 
 
-# -------- 设置状态栏显示信息 --------------
-def set_status_bar(info):
-    mui.status.setText(info)
+def get_abspath():
+    try:
+        root_dir = os.path.dirname(os.path.abspath(__file__))
+    except NameError:  # We are the main py2exe script, not a module
+        root_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    return root_dir
 
 
 # ------ start 设置AccessKey和SecretKey对话框 -------------
 def save_key_set_dialog(sui, set_dialog):
     global ak, sk
 
+    complete_name()
+
     edit_ak = sui.lineEdit_ak.text()
     edit_sk = sui.lineEdit_sk.text()
     if edit_ak == "" or edit_sk == "":
-        QtWidgets.QMessageBox.warning(main_dialog, '警告', "AccessKey和SecretKey都不能为空哦！")
+        QtWidgets.QMessageBox.warning(web_view, '警告', "AccessKey和SecretKey都不能为空哦！")
         return
 
     save_config(edit_ak, edit_sk)
@@ -44,7 +52,7 @@ def save_key_set_dialog(sui, set_dialog):
 
 
 def show_set_dialog():
-    set_dialog = QtWidgets.QDialog(main_dialog, flags=QtCore.Qt.WindowCloseButtonHint)
+    set_dialog = QtWidgets.QDialog(web_view, flags=QtCore.Qt.WindowCloseButtonHint)
     sui = set_ui.Ui_Dialog()
     sui.setupUi(set_dialog)
     sui.pushButton.clicked.connect(partial(save_key_set_dialog, sui, set_dialog))
@@ -56,72 +64,15 @@ def show_set_dialog():
 # ------ end 设置AccessKey和SecretKey对话框 -------------
 
 
-def create_icon_sub_dialog(is_dir, name):
-    icon_dialog = QtWidgets.QDialog(main_dialog, flags=QtCore.Qt.WindowCloseButtonHint)
-    iui = icon_ui.Ui_Dialog()
-    iui.setupUi(icon_dialog)
-    iui.label.setText(name)
-
-    if is_dir is True:
-        pix = QPixmap("images/FolderType.png")
-    else:
-        pix = QPixmap("images/MixFileType.png")
-    iui.image.setPixmap(pix)
-    return icon_dialog
-
-
-def init_bucket(bucket):
-    global cur_marker, cur_prefix
-
-    # 获取仓库域名列表
-    mui.comboBox.clear()
-    set_status_bar("正在获取仓库[%s]域名列表..." % bucket)
-    ret, domains = get_bucket_domains(ak, sk, bucket)
-    if ret is False:
-        info = "获取仓库域名列表失败了，并确保网络畅通！"
-        set_status_bar(info)
-        QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
-        return
-    set_status_bar("获取仓库[%s]域名列表成功！" % bucket)
-    if domains is not None:
-        for d in domains:
-            mui.comboBox.addItem(d)
-
-    # 获取仓库文件列表
-    #for i in reversed(range(mui.horizontalLayout.count())):
-    #    mui.horizontalLayout.removeWidget(mui.horizontalLayout.itemAt(i).widget())
-
-    set_status_bar("正在获取仓库[%s]文件列表..." % bucket)
-    ret, files = get_bucket_files(ak, sk, bucket, cur_marker, 60, cur_prefix)
-    if ret is False:
-        info = "获取仓库文件列表失败了，并确保网络畅通！"
-        set_status_bar(info)
-        QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
-        return
-    set_status_bar("获取仓库[%s]文件列表成功！" % bucket)
-
-    if 'marker' in files:
-        cur_marker = files['marker']
-
-    # 目录
-    if 'commonPrefixes' in files:
-        for directory in files['commonPrefixes']:
-            sub_dialog = create_icon_sub_dialog(True, directory[:-1])
-            mui.horizontalLayout.addWidget(sub_dialog)
-
-    # 文件
-    for f in files['items']:
-        sub_dialog = create_icon_sub_dialog(False, f['key'])
-        mui.horizontalLayout.addWidget(sub_dialog)
-
-
-def change_tab(tab, index):
-    bucket = tab.tabText(index)
-    init_bucket(bucket)
-
-
 def init():
-    global ak, sk
+    global ak, sk, channel, handler
+
+    # js -> python
+    channel = QWebChannel()
+    handler = CallHandler()
+    channel.registerObject('handler', handler)
+    web_view.page().setWebChannel(channel)
+    # js -> python
 
     # 检查AccessKey和SecretKey
     ak, sk = get_config()
@@ -129,44 +80,53 @@ def init():
         show_set_dialog()
 
     # 获取仓库列表
-    set_status_bar("正在获取仓库列表...")
     ret, buckets = get_buckets(ak, sk)
     if ret is False:
-        # 隐藏主界面控件
-        mui.tabWidget.hide()
-        mui.tableView.hide()
-        mui.comboBox.hide()
-        mui.lineEdit.hide()
-        mui.label_domain.hide()
-
         info = "获取仓库列表失败了，请检查AccessKey和SecretKey，并确保网络畅通！"
-        set_status_bar(info)
-        QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
+        QtWidgets.QMessageBox.warning(web_view, '警告', info)
         return
-    set_status_bar("获取仓库列表成功！")
 
     # TODO 没有仓库, 需要新建一个仓库
     if len(buckets) == 0:
         pass
     else:
-        for i in range(0, len(buckets)):
-            mui.tabWidget.addTab(QtWidgets.QWidget(), buckets[i])
+        pass
+        # for i in range(0, len(buckets)):
+        #     mui.tabWidget.addTab(QtWidgets.QWidget(), buckets[i])
 
     # 初始化第一个仓库
-    init_bucket(buckets[0])
+    # init_bucket(buckets[0])
 
     # 监听切换Tab事件
-    mui.tabWidget.currentChanged.connect(partial(change_tab, mui.tabWidget))
+    # mui.tabWidget.currentChanged.connect(partial(change_tab, mui.tabWidget))
+
+
+# js -> python
+class CallHandler(QObject):
+    result = pyqtSignal(int)
+
+    @pyqtSlot(str, result=int)
+    def test(self, s):
+        print('call received:' + s)
+        return 9992
+
+
+# python -> js
+def js_callback(result):
+    print(result)
+
+
+def complete_name():
+    web_view.page().runJavaScript('completeAndReturnName();', js_callback)
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog(flags=QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowCloseButtonHint)
-    main_dialog = Dialog
-    Dialog.setWindowIcon(QIcon("favicon.ico"))
-    ui = main_ui.Ui_Dialog()
-    mui = ui
-    ui.setupUi(Dialog)
-    Dialog.show()
+    app.setWindowIcon(QIcon("favicon.ico"))
+    web = QWebEngineView()
+    web.setWindowTitle("七牛个人网盘 v1.0")
+    web.load(QUrl.fromLocalFile(get_abspath() + "\\index.html"))
+    web.show()
+    web_view = web
     init()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
