@@ -25,22 +25,26 @@
   <property name="windowTitle">
    <string>七牛个人网盘 v1.0</string>
   </property>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLabel" name="status">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>20</x>
      <y>360</y>
-     <width>621</width>
+     <width>661</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>10</pointsize>
+     <family>微软雅黑</family>
+     <pointsize>8</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 85, 0)</string>
+   </property>
    <property name="text">
-    <string>lalalla</string>
+    <string>状态栏</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -49,25 +53,69 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>10</y>
-     <width>651</width>
+     <width>681</width>
      <height>351</height>
     </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
    </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string>仓库1</string>
+     <string>仓库名</string>
     </attribute>
    </widget>
-   <widget class="QWidget" name="tab_2">
-    <attribute name="title">
-     <string>仓库2</string>
-    </attribute>
-   </widget>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>31</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>域名:</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="tableView">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>70</y>
+     <width>661</width>
+     <height>281</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>40</y>
+     <width>281</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>40</y>
+     <width>321</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>输入文件前缀搜索</string>
+   </property>
   </widget>
  </widget>
  <resources/>

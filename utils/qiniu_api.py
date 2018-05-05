@@ -18,11 +18,11 @@ def get_buckets(ak, sk):
         }
         response = requests.request("GET", url, headers=headers)
         if response.status_code == 200:
-            return json.JSONDecoder().decode(response.text)
+            return True, json.JSONDecoder().decode(response.text)
         print("qiniu_api.py get_buckets() failed:" + response.text)
     except Exception as e:
         print("qiniu_api.py get_buckets() failed:" + str(e))
-    return ()
+    return False, None
 
 
 # 获取指定空间域名列表
