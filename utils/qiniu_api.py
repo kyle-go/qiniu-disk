@@ -72,9 +72,9 @@ def create_bucket(ak, sk, bucket, region=0):
 
 
 # 获取指定空间资源列表
-def get_bucket_files(ak, sk, bucket, marker, limit, prefix, delimiter):
+def get_bucket_files(ak, sk, bucket, marker, limit, prefix, delimiter="/"):
     try:
-        sub_url = "/list?bucket=%s&marker=%s&limit=%s&prefix=%s&delimiter=%x" % (
+        sub_url = "/list?bucket=%s&marker=%s&limit=%s&prefix=%s&delimiter=%s" % (
             bucket, marker, limit, prefix, delimiter)
         authorization = Auth(ak, sk).token_of_request(sub_url)
         url = "http://rsf.qbox.me%s" % sub_url

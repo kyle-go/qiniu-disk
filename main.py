@@ -10,12 +10,13 @@ from PyQt5.QtGui import QIcon
 import main_ui
 import set_ui
 from utils.utils import get_config, save_config
-from utils.qiniu_api import get_buckets, get_bucket_domains
+from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files
 
 main_dialog = None
 mui = None
 ak = None
 sk = None
+cur_marker = ""
 
 
 # -------- 设置状态栏显示信息 --------------
@@ -54,6 +55,8 @@ def show_set_dialog():
 
 
 def init_bucket(bucket):
+    global cur_marker
+
     # 获取仓库域名列表
     set_status_bar("正在获取仓库[%s]域名列表..." % bucket)
     ret, domains = get_bucket_domains(ak, sk, bucket)
@@ -68,6 +71,22 @@ def init_bucket(bucket):
 
     # 获取仓库文件列表
     set_status_bar("正在获取仓库[%s]文件列表..." % bucket)
+    ret, files = get_bucket_files(ak, sk, bucket, cur_marker, 60, mui.lineEdit.text())
+    if ret is False:
+        info = "获取仓库文件列表失败了，并确保网络畅通！"
+        set_status_bar(info)
+        QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
+        return
+    set_status_bar("获取仓库[%s]文件列表成功！" % bucket)
+    cur_marker = files['marker']
+
+    # 目录
+    for dir in files['commonPrefixes']:
+        print("DIR:" + dir)
+
+    # 文件
+    for f in files['items']:
+        print("FILE:" + f['key'])
 
 
 def init():
