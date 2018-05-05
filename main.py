@@ -5,15 +5,17 @@ from functools import partial
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QPixmap
 
 import main_ui
 import set_ui
+import icon_ui
 from utils.utils import get_config, save_config
 from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files
 
 main_dialog = None
 mui = None
+mgrid = None
 ak = None
 sk = None
 cur_marker = ""
@@ -54,6 +56,20 @@ def show_set_dialog():
 # ------ end 设置AccessKey和SecretKey对话框 -------------
 
 
+def create_icon_sub_dialog(is_dir, name):
+    icon_dialog = QtWidgets.QDialog(main_dialog, flags=QtCore.Qt.WindowCloseButtonHint)
+    iui = icon_ui.Ui_Dialog()
+    iui.setupUi(icon_dialog)
+    iui.label.setText(name)
+
+    if is_dir is True:
+        pix = QPixmap("images/FolderType.png")
+    else:
+        pix = QPixmap("images/MixFileType.png")
+    iui.image.setPixmap(pix)
+    return icon_dialog
+
+
 def init_bucket(bucket):
     global cur_marker
 
@@ -83,14 +99,17 @@ def init_bucket(bucket):
     # 目录
     for dir in files['commonPrefixes']:
         print("DIR:" + dir)
-
+        sub_dialog = create_icon_sub_dialog(True, dir[:-1])
+        mui.gridLayout.addWidget(sub_dialog)
     # 文件
     for f in files['items']:
         print("FILE:" + f['key'])
+        sub_dialog = create_icon_sub_dialog(False, f['key'])
+        mui.gridLayout.addWidget(sub_dialog)
 
 
 def init():
-    global ak, sk
+    global ak, sk, mgrid
 
     # 检查AccessKey和SecretKey
     ak, sk = get_config()
