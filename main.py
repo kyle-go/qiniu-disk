@@ -10,7 +10,7 @@ from PyQt5.QtGui import QIcon
 import main_ui
 import set_ui
 from utils.utils import get_config, save_config
-from utils.qiniu_api import get_buckets
+from utils.qiniu_api import get_buckets, get_bucket_domains
 
 main_dialog = None
 mui = None
@@ -23,7 +23,7 @@ def set_status_bar(info):
     mui.status.setText(info)
 
 
-# ------ start set ak, sk dialog -------------
+# ------ start 设置AccessKey和SecretKey对话框 -------------
 def save_key_set_dialog(sui, set_dialog):
     global ak, sk
 
@@ -50,7 +50,24 @@ def show_set_dialog():
         sys.exit(0)
 
 
-# ------ end set ak, sk dialog -------------
+# ------ end 设置AccessKey和SecretKey对话框 -------------
+
+
+def init_bucket(bucket):
+    # 获取仓库域名列表
+    set_status_bar("正在获取仓库[%s]域名列表..." % bucket)
+    ret, domains = get_bucket_domains(ak, sk, bucket)
+    if ret is False:
+        info = "获取仓库域名列表失败了，并确保网络畅通！"
+        set_status_bar(info)
+        QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
+        return
+    set_status_bar("获取仓库[%s]域名列表成功！" % bucket)
+    for i in range(0, len(domains)):
+        mui.comboBox.addItem(domains[i])
+
+    # 获取仓库文件列表
+    set_status_bar("正在获取仓库[%s]文件列表..." % bucket)
 
 
 def init():
@@ -62,20 +79,31 @@ def init():
         show_set_dialog()
 
     # 获取仓库列表
+    set_status_bar("正在获取仓库列表...")
     ret, buckets = get_buckets(ak, sk)
     if ret is False:
+        # 隐藏主界面控件
+        mui.tabWidget.hide()
+        mui.tableView.hide()
+        mui.comboBox.hide()
+        mui.lineEdit.hide()
+        mui.label_domain.hide()
+
         info = "获取仓库列表失败了，请检查AccessKey和SecretKey，并确保网络畅通！"
         set_status_bar(info)
         QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
         return
+    set_status_bar("获取仓库列表成功！")
 
     # TODO 没有仓库, 需要新建一个仓库
     if len(buckets) == 0:
         pass
     else:
-        mui.tabWidget.setTabText(0, buckets[0])
-        for i in range(1, len(buckets)):
+        for i in range(0, len(buckets)):
             mui.tabWidget.addTab(QtWidgets.QWidget(), buckets[i])
+
+    # 初始化第一个仓库
+    init_bucket(buckets[0])
 
 
 if __name__ == "__main__":
