@@ -22,7 +22,7 @@ def save_key_set_dialog(sui, set_dialog):
     edit_ak = sui.lineEdit_ak.text()
     edit_sk = sui.lineEdit_sk.text()
     if edit_ak == "" or edit_sk == "":
-        QtWidgets.QMessageBox.information(main_dialog, '警告', "AccessKey和SecretKey都不能为空哦！")
+        QtWidgets.QMessageBox.warning(main_dialog, '警告', "AccessKey和SecretKey都不能为空哦！")
         return
 
     save_config(edit_ak, edit_sk)

@@ -38,7 +38,7 @@ def get_bucket_domains(ak, sk, bucket):
         response = requests.request("GET", url, headers=headers)
         if response.status_code == 200:
             return json.JSONDecoder().decode(response.text)
-        print("qiniu_api.py get_buckets() failed:" + response.text)
+        print("qiniu_api.py get_bucket_domains() failed:" + response.text)
     except Exception as e:
-        print("qiniu_api.py get_buckets() failed:" + str(e))
+        print("qiniu_api.py get_bucket_domains() failed:" + str(e))
     return ()
