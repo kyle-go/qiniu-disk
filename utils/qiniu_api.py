@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # qiniu api
+# 参考: https://developer.qiniu.com/kodo/api/1731/api-overview
 
 import json
 import base64
@@ -55,7 +56,7 @@ def create_bucket(ak, sk, bucket, region=0):
     try:
         sub_url = "/mkbucketv2/%s/region/%s" % (base64.b64encode(bucket), Region[region])
         authorization = Auth(ak, sk).token_of_request(sub_url)
-        url = "http://rs.qiniu.com/mkbucketv2%s" % sub_url
+        url = "http://rs.qiniu.com%s" % sub_url
         headers = {
             'Authorization': "QBox " + authorization,
             'User-Agent': 'client by "https://gitee.com/kylescript/qiniu-disk"',
@@ -67,4 +68,25 @@ def create_bucket(ak, sk, bucket, region=0):
         print("qiniu_api.py create_bucket() failed:" + response.text)
     except Exception as e:
         print("qiniu_api.py create_bucket() failed:" + str(e))
+    return False, None
+
+
+# 获取指定空间资源列表
+def get_bucket_files(ak, sk, bucket, marker, limit, prefix, delimiter):
+    try:
+        sub_url = "/list?bucket=%s&marker=%s&limit=%s&prefix=%s&delimiter=%x" % (
+            bucket, marker, limit, prefix, delimiter)
+        authorization = Auth(ak, sk).token_of_request(sub_url)
+        url = "http://rsf.qbox.me%s" % sub_url
+        headers = {
+            'Authorization': "QBox " + authorization,
+            'User-Agent': 'client by "https://gitee.com/kylescript/qiniu-disk"',
+            'Accept-Encoding': 'gzip'
+        }
+        response = requests.request("POST", url, headers=headers)
+        if response.status_code == 200:
+            return True, json.JSONDecoder().decode(response.text)
+        print("qiniu_api.py get_bucket_files() failed:" + response.text)
+    except Exception as e:
+        print("qiniu_api.py get_bucket_files() failed:" + str(e))
     return False, None
