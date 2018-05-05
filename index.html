@@ -9,8 +9,7 @@
 	<script>
 		function test(){
 			new QWebChannel(qt.webChannelTransport, function (channel) {
-				window.handler = channel.objects.handler;
-				window.handler.test("pppaaa", function(r){alert(r);});
+				channel.objects.handler.test("pppaaa", function(r){alert(r);});
 			});
 		}
 		
