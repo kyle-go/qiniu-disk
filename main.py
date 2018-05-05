@@ -119,7 +119,7 @@ if __name__ == "__main__":
     app.setWindowIcon(QIcon("favicon.ico"))
     web = QWebEngineView()
     web.setWindowTitle("七牛个人网盘 v1.0")
-    web.load(QUrl.fromLocalFile(get_abspath() + "\\html\\index.html"))
+    web.load(QUrl.fromLocalFile(get_abspath() + "/html/index.html"))
     web.show()
     web_view = web
     init()
