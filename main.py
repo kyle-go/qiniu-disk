@@ -15,10 +15,10 @@ from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files
 
 main_dialog = None
 mui = None
-mgrid = None
 ak = None
 sk = None
 cur_marker = ""
+cur_prefix = ""
 
 
 # -------- 设置状态栏显示信息 --------------
@@ -71,9 +71,10 @@ def create_icon_sub_dialog(is_dir, name):
 
 
 def init_bucket(bucket):
-    global cur_marker
+    global cur_marker, cur_prefix
 
     # 获取仓库域名列表
+    mui.comboBox.clear()
     set_status_bar("正在获取仓库[%s]域名列表..." % bucket)
     ret, domains = get_bucket_domains(ak, sk, bucket)
     if ret is False:
@@ -82,34 +83,45 @@ def init_bucket(bucket):
         QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
         return
     set_status_bar("获取仓库[%s]域名列表成功！" % bucket)
-    for i in range(0, len(domains)):
-        mui.comboBox.addItem(domains[i])
+    if domains is not None:
+        for d in domains:
+            mui.comboBox.addItem(d)
 
     # 获取仓库文件列表
+    #for i in reversed(range(mui.horizontalLayout.count())):
+    #    mui.horizontalLayout.removeWidget(mui.horizontalLayout.itemAt(i).widget())
+
     set_status_bar("正在获取仓库[%s]文件列表..." % bucket)
-    ret, files = get_bucket_files(ak, sk, bucket, cur_marker, 60, mui.lineEdit.text())
+    ret, files = get_bucket_files(ak, sk, bucket, cur_marker, 60, cur_prefix)
     if ret is False:
         info = "获取仓库文件列表失败了，并确保网络畅通！"
         set_status_bar(info)
         QtWidgets.QMessageBox.warning(main_dialog, '警告', info)
         return
     set_status_bar("获取仓库[%s]文件列表成功！" % bucket)
-    cur_marker = files['marker']
+
+    if 'marker' in files:
+        cur_marker = files['marker']
 
     # 目录
-    for dir in files['commonPrefixes']:
-        print("DIR:" + dir)
-        sub_dialog = create_icon_sub_dialog(True, dir[:-1])
-        mui.horizontalLayout.addWidget(sub_dialog)
+    if 'commonPrefixes' in files:
+        for directory in files['commonPrefixes']:
+            sub_dialog = create_icon_sub_dialog(True, directory[:-1])
+            mui.horizontalLayout.addWidget(sub_dialog)
+
     # 文件
     for f in files['items']:
-        print("FILE:" + f['key'])
         sub_dialog = create_icon_sub_dialog(False, f['key'])
         mui.horizontalLayout.addWidget(sub_dialog)
 
 
+def change_tab(tab, index):
+    bucket = tab.tabText(index)
+    init_bucket(bucket)
+
+
 def init():
-    global ak, sk, mgrid
+    global ak, sk
 
     # 检查AccessKey和SecretKey
     ak, sk = get_config()
@@ -142,6 +154,9 @@ def init():
 
     # 初始化第一个仓库
     init_bucket(buckets[0])
+
+    # 监听切换Tab事件
+    mui.tabWidget.currentChanged.connect(partial(change_tab, mui.tabWidget))
 
 
 if __name__ == "__main__":
