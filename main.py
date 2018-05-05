@@ -36,8 +36,6 @@ def get_abspath():
 def save_key_set_dialog(sui, set_dialog):
     global ak, sk
 
-    complete_name()
-
     edit_ak = sui.lineEdit_ak.text()
     edit_sk = sui.lineEdit_sk.text()
     if edit_ak == "" or edit_sk == "":
@@ -112,12 +110,8 @@ class CallHandler(QObject):
 
 
 # python -> js
-def js_callback(result):
-    print(result)
-
-
 def complete_name():
-    web_view.page().runJavaScript('completeAndReturnName();', js_callback)
+    web_view.page().runJavaScript('completeAndReturnName();', lambda v: print(v))
 
 
 if __name__ == "__main__":
