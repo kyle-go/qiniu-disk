@@ -20,11 +20,7 @@
             word-break: break-all;
             line-height: 27px;
         }
-        
-        .margin-bigger {
-            margin: 10px;
-        }
-        
+
         .div-content {
             margin-top: 50px;
             text-align: center;
@@ -34,32 +30,35 @@
             color: #fff;
             background-color: #5FC3E4;
             background-image: linear-gradient(120deg, #E55D87, #5FC3E4);
-            padding: 60px 10px 10px 10px;
+            padding: 10px 10px 10px 10px;
         }
-        
-        .img-container {
-            margin-bottom: 15px;
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            width: 160px;
-            display: inline-block;
+
+
+        .bucket {
+            overflow-x: auto;
+            white-space: nowrap;
+            margin: 15px 0 0 0;
+            padding: 5px 0 8px 15px;
+            background-color: rgb(44, 46, 69);
         }
-        
-        .version {
+
+        .bucket a {
             font-size: 13px;
-            margin-top: 15px;
-            margin-bottom: 30px;
-            color: #fff;
+            text-decoration: none;
+            color: #999;
+            padding: 1px 5px;
         }
-        
+
+        .bucket .active {
+            font-weight: bold;
+            color: #ddd;
+            padding-bottom: 2px;
+            border-bottom: 3px solid rgb(77, 111, 235);
+        }
+
         .container {
             color: #555;
             margin-top: 20px;
-        }
-        
-        .half-hr {
-            width: 100px;
         }
         
         .footer-container {
@@ -97,8 +96,10 @@
         </div>
     </nav>
     <div class="div-content">
-        <div class="header-container">
-			<h1>Header</h1>
+        <div class="header-container bucket">
+            <a class="active" onclick="">bucket01</a>
+            <a onclick="">bucket02</a>
+            <a onclick="">bucket03</a>
         </div>
         <div class="container">
             <h2>The Files</h2>
@@ -123,20 +124,12 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Bucket Name:</label>
-                            <input type="text" class="form-control" id="bucket_name">
-                        </div>
-                        <div class="form-group">
                             <label for="recipient-name" class="form-control-label">Access Key:</label>
                             <input type="text" class="form-control" id="access_key">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="form-control-label">Secret Key:</label>
                             <input type="text" class="form-control" id="secret_key">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Domain Name:</label>
-                            <input type="text" class="form-control" id="domain_name" placeholder="eg. http://ort84ej.bkt.clouddn.com">
                         </div>
                     </form>
                 </div>
