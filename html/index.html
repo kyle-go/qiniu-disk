@@ -146,11 +146,17 @@
 				channel.objects.handler.test("pppaaa", function(r){alert(r);});
 			});
 		}
-		
-		function completeAndReturnName() {
-			alert("from js.");
-			return "abc"
+
+		function show_setting_dialog() {
+            $('#setting-modal').modal();
 		}
+
+		function set_keys(ak, sk){
+		    alert(ak);
+		    alert(sk);
+		}
+
+		show_setting_dialog();
     </script>
 </body>
 

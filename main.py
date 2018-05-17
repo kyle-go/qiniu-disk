@@ -11,7 +11,6 @@ from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtSignal
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebChannel import QWebChannel
 
-import set_ui
 from utils.utils import get_config, save_config
 from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files
 
@@ -32,36 +31,6 @@ def get_abspath():
     return root_dir
 
 
-# ------ start 设置AccessKey和SecretKey对话框 -------------
-def save_key_set_dialog(sui, set_dialog):
-    global ak, sk
-
-    edit_ak = sui.lineEdit_ak.text()
-    edit_sk = sui.lineEdit_sk.text()
-    if edit_ak == "" or edit_sk == "":
-        QtWidgets.QMessageBox.warning(web_view, '警告', "AccessKey和SecretKey都不能为空哦！")
-        return
-
-    save_config(edit_ak, edit_sk)
-    ak = edit_ak
-    sk = edit_sk
-    # set dialog return value
-    set_dialog.accept()
-
-
-def show_set_dialog():
-    set_dialog = QtWidgets.QDialog(web_view, flags=QtCore.Qt.WindowCloseButtonHint)
-    sui = set_ui.Ui_Dialog()
-    sui.setupUi(set_dialog)
-    sui.pushButton.clicked.connect(partial(save_key_set_dialog, sui, set_dialog))
-    exit_code = set_dialog.exec()
-    if exit_code != QtWidgets.QDialog.Accepted:
-        sys.exit(0)
-
-
-# ------ end 设置AccessKey和SecretKey对话框 -------------
-
-
 def init():
     global ak, sk, channel, handler
 
@@ -75,7 +44,11 @@ def init():
     # 检查AccessKey和SecretKey
     ak, sk = get_config()
     if ak is None:
-        show_set_dialog()
+        web_view.page().runJavaScript('show_setting_dialog();')
+        return
+    else:
+        web_view.page().runJavaScript('completeAndReturnName();', lambda v: print(v))
+        web_view.page().runJavaScript('set_keys("%s", "%s");' % (ak, sk))
 
     # 获取仓库列表
     ret, buckets = get_buckets(ak, sk)
@@ -111,6 +84,7 @@ class CallHandler(QObject):
 
 # python -> js
 def complete_name():
+    print("asdfsdf")
     web_view.page().runJavaScript('completeAndReturnName();', lambda v: print(v))
 
 
@@ -119,8 +93,8 @@ if __name__ == "__main__":
     app.setWindowIcon(QIcon("favicon.ico"))
     web = QWebEngineView()
     web.setWindowTitle("七牛个人网盘 v1.0")
+    web.loadFinished.connect(init)
     web.load(QUrl.fromLocalFile(get_abspath() + "/html/index.html"))
     web.show()
     web_view = web
-    init()
     sys.exit(app.exec())
