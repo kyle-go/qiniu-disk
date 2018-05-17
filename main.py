@@ -65,9 +65,9 @@ def init():
 class CallHandler(QObject):
     result = pyqtSignal(int)
 
-    @pyqtSlot(str, result=str)
-    def save_keys(self, ak):
-        print('call received:' + ak)
+    @pyqtSlot(str, str, result=str)
+    def save_keys(self, ak, sk):
+        print('call received:' + ak + "#" + sk)
         return "save_keys. --by python."
 
 
