@@ -44,11 +44,8 @@ def init():
     # 检查AccessKey和SecretKey
     ak, sk = get_config()
     if ak is None:
-        web_view.page().runJavaScript('show_setting_dialog();')
+        web_view.page().runJavaScript('show_setting_dialog();', lambda v: print(v))
         return
-    else:
-        web_view.page().runJavaScript('completeAndReturnName();', lambda v: print(v))
-        web_view.page().runJavaScript('set_keys("%s", "%s");' % (ak, sk))
 
     # 获取仓库列表
     ret, buckets = get_buckets(ak, sk)
@@ -62,30 +59,16 @@ def init():
         pass
     else:
         pass
-        # for i in range(0, len(buckets)):
-        #     mui.tabWidget.addTab(QtWidgets.QWidget(), buckets[i])
-
-    # 初始化第一个仓库
-    # init_bucket(buckets[0])
-
-    # 监听切换Tab事件
-    # mui.tabWidget.currentChanged.connect(partial(change_tab, mui.tabWidget))
 
 
 # js -> python
 class CallHandler(QObject):
     result = pyqtSignal(int)
 
-    @pyqtSlot(str, result=int)
-    def test(self, s):
-        print('call received:' + s)
-        return 9992
-
-
-# python -> js
-def complete_name():
-    print("asdfsdf")
-    web_view.page().runJavaScript('completeAndReturnName();', lambda v: print(v))
+    @pyqtSlot(str, result=str)
+    def save_keys(self, ak):
+        print('call received:' + ak)
+        return "save_keys. --by python."
 
 
 if __name__ == "__main__":

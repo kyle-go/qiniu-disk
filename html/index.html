@@ -135,28 +135,30 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="save_qiniu_param()">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="save_qiniu_keys()">Save</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-		function test(){
-			new QWebChannel(qt.webChannelTransport, function (channel) {
-				channel.objects.handler.test("pppaaa", function(r){alert(r);});
-			});
-		}
-
 		function show_setting_dialog() {
             $('#setting-modal').modal();
+            return "show modal --by js."
 		}
 
-		function set_keys(ak, sk){
-		    alert(ak);
-		    alert(sk);
-		}
+        function save_qiniu_keys(){
+            var ak = $('#access_key').val();
+            var sk = $('#secret_key').val();
+            if (ak === "" || sk === ""){
+                alert("AccessKey 和 SecretKey都不能为空哦！");
+                return
+            }
 
-		show_setting_dialog();
+            //call python to save access_key and secret_key
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+				channel.objects.handler.save_keys(ak, function(r){console.log(r);});
+			});
+        }
     </script>
 </body>
 
