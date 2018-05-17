@@ -2,9 +2,7 @@
 
 import os
 import sys
-from functools import partial
 
-from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtSignal
@@ -47,18 +45,8 @@ def init():
         web_view.page().runJavaScript('show_setting_dialog();', lambda v: print(v))
         return
 
-    # 获取仓库列表
-    ret, buckets = get_buckets(ak, sk)
-    if ret is False:
-        info = "获取仓库列表失败了，请检查AccessKey和SecretKey，并确保网络畅通！"
-        QtWidgets.QMessageBox.warning(web_view, '警告', info)
-        return
-
-    # TODO 没有仓库, 需要新建一个仓库
-    if len(buckets) == 0:
-        pass
-    else:
-        pass
+    buckets = handler.get_buckets()
+    print(buckets)
 
 
 # js -> python
@@ -66,9 +54,25 @@ class CallHandler(QObject):
     result = pyqtSignal(int)
 
     @pyqtSlot(str, str, result=str)
-    def save_keys(self, ak, sk):
-        print('call received:' + ak + "#" + sk)
+    def save_keys(self, ak1, sk1):
+        global ak, sk
+        ak = ak1
+        sk = sk1
+        save_config(ak, sk)
         return "save_keys. --by python."
+
+    @pyqtSlot(result=str)
+    def get_buckets(self):
+        # 获取仓库列表
+        ret, buckets = get_buckets(ak, sk)
+        if ret is False:
+            return "ERROR"
+        if len(buckets) == 0:
+            return "NONE"
+        result = ""
+        for k in buckets:
+            result += k + ";"
+        return result
 
 
 if __name__ == "__main__":
