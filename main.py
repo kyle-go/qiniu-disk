@@ -44,9 +44,7 @@ def init():
     if ak is None:
         web_view.page().runJavaScript('show_setting_dialog();', lambda v: print(v))
         return
-
-    buckets = handler.get_buckets()
-    print(buckets)
+    web_view.page().runJavaScript('set_keys("%s", "%s");' % (ak, sk), lambda v: print(v))
 
 
 # js -> python

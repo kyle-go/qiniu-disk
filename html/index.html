@@ -160,7 +160,19 @@
 			});
 
 			//get buckets
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+				channel.objects.handler.get_buckets(function(r){alert(r);});
+			});
+        }
 
+        function set_keys(ak, sk){
+            $('#access_key').val(ak);
+            $('#secret_key').val(sk);
+
+            //get buckets
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+				channel.objects.handler.get_buckets(function(r){alert(r);});
+			});
         }
     </script>
 </body>
