@@ -91,17 +91,17 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         <form class="form-inline mt-2 mt-md-0">
+            <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#new-bucket-modal">
+                新建bucket
+            </button>
             <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#setting-modal">
-                Setting
+                设置
             </button>
         </form>
     </div>
 </nav>
 <div class="div-content">
     <div class="header-container bucket">
-        <a class="active" onclick="">bucket01</a>
-        <a onclick="">bucket02</a>
-        <a onclick="">bucket03</a>
     </div>
     <div class="container">
         <h2>The Files</h2>
@@ -119,7 +119,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Qiniu Account Setting</h5>
+                <h5 class="modal-title">设置AccessKey和SecretKey</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -139,6 +139,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="save_qiniu_keys()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="new-bucket-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">新建bucket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">bucket名称:</label>
+                        <input type="text" class="form-control" id="new-bucket">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="create_bucket()">Save</button>
             </div>
         </div>
     </div>
@@ -177,7 +202,24 @@
         //get buckets
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_buckets(function (r) {
-                alert(r);
+                if (r === "ERROR") {
+                    alert("获取空间列表失败了，请检查AccessKey和SecretKey！");
+                    return;
+                }
+                if (r === "NONE") {
+                    $('#new-bucket-modal').modal();
+                    return;
+                }
+                var buckets = r.split(";");
+                for (var index in buckets) {
+                    if (buckets[index] !== "") {
+                        if (index === 0) {
+                            $(".bucket").append('<a class="active" onclick="">' + buckets[index] + '</a>');
+                        } else {
+                            $(".bucket").append('<a onclick="">' + buckets[index] + '</a>');
+                        }
+                    }
+                }
             });
         });
     }
