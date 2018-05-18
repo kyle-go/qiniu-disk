@@ -211,12 +211,12 @@
                     return;
                 }
                 var buckets = r.split(";");
-                for (var index in buckets) {
-                    if (buckets[index] !== "") {
-                        if (index === 0) {
-                            $(".bucket").append('<a class="active" onclick="">' + buckets[index] + '</a>');
+                for (var i = 0, len = buckets.length; i < len; i++) {
+                    if (buckets[i] !== "") {
+                        if (i === 0) {
+                            $(".bucket").append('<a class="active" onclick="">' + buckets[i] + '</a>');
                         } else {
-                            $(".bucket").append('<a onclick="">' + buckets[index] + '</a>');
+                            $(".bucket").append('<a onclick="">' + buckets[i] + '</a>');
                         }
                     }
                 }
