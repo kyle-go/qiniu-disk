@@ -14,7 +14,7 @@
         body {
             font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
         }
-        
+
         p {
             white-space: normal;
             word-break: break-all;
@@ -25,14 +25,13 @@
             margin-top: 50px;
             text-align: center;
         }
-        
+
         .header-container {
             color: #fff;
             background-color: #5FC3E4;
             background-image: linear-gradient(120deg, #E55D87, #5FC3E4);
             padding: 10px 10px 10px 10px;
         }
-
 
         .bucket {
             overflow-x: auto;
@@ -60,7 +59,7 @@
             color: #555;
             margin-top: 20px;
         }
-        
+
         .footer-container {
             margin-top: 20px;
             padding: 15px;
@@ -68,12 +67,12 @@
             border-top: 1px solid #cccccc;
             background-color: #efefef;
         }
-        
+
         .ft-span {
             margin: 15px;
             font-size: 14px;
         }
-        
+
         .modal-body {
             color: #444;
         }
@@ -82,97 +81,107 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">七牛个人网盘</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">七牛个人网盘</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-            </ul>
-            <form class="form-inline mt-2 mt-md-0">
-                <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#setting-modal">Setting</button>
-            </form>
-        </div>
-    </nav>
-    <div class="div-content">
-        <div class="header-container bucket">
-            <a class="active" onclick="">bucket01</a>
-            <a onclick="">bucket02</a>
-            <a onclick="">bucket03</a>
-        </div>
-        <div class="container">
-            <h2>The Files</h2>
-        </div>
-        <div class="footer-container">
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <form class="form-inline mt-2 mt-md-0">
+            <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#setting-modal">
+                Setting
+            </button>
+        </form>
+    </div>
+</nav>
+<div class="div-content">
+    <div class="header-container bucket">
+        <a class="active" onclick="">bucket01</a>
+        <a onclick="">bucket02</a>
+        <a onclick="">bucket03</a>
+    </div>
+    <div class="container">
+        <h2>The Files</h2>
+    </div>
+    <div class="footer-container">
             <span class="ft-span">
                 <a href="https://kyle.net.cn" target="_blank">©2018 https://kyle.net.cn All right reserved.</a>
             </span>
-        </div>
     </div>
+</div>
 
-    <!-- Setting Modal -->
-    <div class="modal fade" id="setting-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Qiniu Account Setting</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Access Key:</label>
-                            <input type="text" class="form-control" id="access_key">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Secret Key:</label>
-                            <input type="text" class="form-control" id="secret_key">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="save_qiniu_keys()">Save</button>
-                </div>
+<!-- Setting Modal -->
+<div class="modal fade" id="setting-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Qiniu Account Setting</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Access Key:</label>
+                        <input type="text" class="form-control" id="access_key">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Secret Key:</label>
+                        <input type="text" class="form-control" id="secret_key">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="save_qiniu_keys()">Save</button>
             </div>
         </div>
     </div>
-    <script>
-		function show_setting_dialog() {
-            $('#setting-modal').modal();
-            return "show modal --by js."
-		}
+</div>
+<script>
+    function show_setting_dialog() {
+        $('#setting-modal').modal();
+        return "show modal --by js."
+    }
 
-        function save_qiniu_keys(){
-            var ak = $('#access_key').val();
-            var sk = $('#secret_key').val();
-            if (ak === "" || sk === ""){
-                alert("AccessKey 和 SecretKey都不能为空哦！");
-                return
-            }
-			
-            //call python
-            new QWebChannel(qt.webChannelTransport, function (channel) {
-				//save access_key and secret_key
-				channel.objects.handler.save_keys(ak, sk, function(r){console.log(r);});
-				//get buckets
-				channel.objects.handler.get_buckets(function(r){alert(r);});
-			});
+    function save_qiniu_keys() {
+        var ak = $('#access_key').val();
+        var sk = $('#secret_key').val();
+        if (ak === "" || sk === "") {
+            alert("AccessKey 和 SecretKey都不能为空哦！");
+            return
         }
 
-        function set_keys(ak, sk){
-            $('#access_key').val(ak);
-            $('#secret_key').val(sk);
-
+        //call python
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            //save access_key and secret_key
+            channel.objects.handler.save_keys(ak, sk, function (r) {
+                console.log(r);
+            });
             //get buckets
-            new QWebChannel(qt.webChannelTransport, function (channel) {
-				channel.objects.handler.get_buckets(function(r){alert(r);});
-			});
-        }
-    </script>
+            channel.objects.handler.get_buckets(function (r) {
+                alert(r);
+            });
+        });
+    }
+
+    function set_keys(ak, sk) {
+        $('#access_key').val(ak);
+        $('#secret_key').val(sk);
+
+        //get buckets
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            channel.objects.handler.get_buckets(function (r) {
+                alert(r);
+            });
+        });
+    }
+</script>
 </body>
 
 </html>
