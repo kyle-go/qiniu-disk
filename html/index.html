@@ -153,14 +153,12 @@
                 alert("AccessKey 和 SecretKey都不能为空哦！");
                 return
             }
-
-            //call python to save access_key and secret_key
+			
+            //call python
             new QWebChannel(qt.webChannelTransport, function (channel) {
+				//save access_key and secret_key
 				channel.objects.handler.save_keys(ak, sk, function(r){console.log(r);});
-			});
-
-			//get buckets
-            new QWebChannel(qt.webChannelTransport, function (channel) {
+				//get buckets
 				channel.objects.handler.get_buckets(function(r){alert(r);});
 			});
         }
