@@ -169,6 +169,28 @@
     </div>
 </div>
 <script>
+
+    function new_buckets(r) {
+        if (r === "ERROR") {
+            alert("获取空间列表失败了，请检查AccessKey和SecretKey！");
+            return;
+        }
+        if (r === "NONE") {
+            $('#new-bucket-modal').modal();
+            return;
+        }
+        var buckets = r.split(";");
+        for (var i = 0, len = buckets.length; i < len; i++) {
+            if (buckets[i] !== "") {
+                if (i === 0) {
+                    $(".bucket").append('<a class="active" onclick="">' + buckets[i] + '</a>');
+                } else {
+                    $(".bucket").append('<a onclick="">' + buckets[i] + '</a>');
+                }
+            }
+        }
+    }
+
     function show_setting_dialog() {
         $('#setting-modal').modal();
         return "show modal --by js."
@@ -190,9 +212,10 @@
             });
             //get buckets
             channel.objects.handler.get_buckets(function (r) {
-                alert(r);
+                new_buckets(r);
             });
         });
+        $('#setting-modal').modal('toggle');
     }
 
     function set_keys(ak, sk) {
@@ -202,24 +225,7 @@
         //get buckets
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_buckets(function (r) {
-                if (r === "ERROR") {
-                    alert("获取空间列表失败了，请检查AccessKey和SecretKey！");
-                    return;
-                }
-                if (r === "NONE") {
-                    $('#new-bucket-modal').modal();
-                    return;
-                }
-                var buckets = r.split(";");
-                for (var i = 0, len = buckets.length; i < len; i++) {
-                    if (buckets[i] !== "") {
-                        if (i === 0) {
-                            $(".bucket").append('<a class="active" onclick="">' + buckets[i] + '</a>');
-                        } else {
-                            $(".bucket").append('<a onclick="">' + buckets[i] + '</a>');
-                        }
-                    }
-                }
+                new_buckets(r);
             });
         });
     }
