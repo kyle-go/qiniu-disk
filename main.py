@@ -72,9 +72,26 @@ class CallHandler(QObject):
             result += k + ";"
         return result
 
-    @pyqtSlot(str, str, result=str)
-    def get_files(self, bucket_name, bucket_maker):
-        return "get_files --- by python"
+    @pyqtSlot(str, str, str, result=str)
+    def get_files(self, bucket_name, bucket_marker, bucket_prefix):
+        ret, files = get_bucket_files(ak, sk, bucket_name, bucket_marker, 10, bucket_prefix)
+        if ret is True:
+            # 获取文件列表
+            _files = ""
+            for item in files['items']:
+                _files += '{"name":"%s", "size":%d, "timestamp":%d},' % (item['key'], item['fsize'], item['putTime'])
+            if len(_files) > 0:
+                _files = _files[:-1]
+
+            # 获取目录列表
+            directories = ""
+            for item in files['commonPrefixes']:
+                directories += '"%s",' % item
+            if len(directories) > 0:
+                directories = directories[:-1]
+            return '{"status":0, "files":[%s], "directories":[%s], "marker":"%s"}' % (_files, directories, files['marker'])
+        else:
+            return '{"status":-1}'
 
 
 if __name__ == "__main__":

@@ -170,7 +170,8 @@
 </div>
 <script>
     var cur_bucket_name = "";
-    var cur_bucket_maker = "";
+    var cur_bucket_marker = "";
+    var cur_bucket_prefix = "";
 
     function change_bucket(bucket_name) {
         var a = $(".bucket");
@@ -189,7 +190,8 @@
     function init_bucket_files(bucket_name) {
         //get files
         new QWebChannel(qt.webChannelTransport, function (channel) {
-            channel.objects.handler.get_files(cur_bucket_name, cur_bucket_maker, function (r) {
+            channel.objects.handler.get_files(cur_bucket_name, cur_bucket_marker, cur_bucket_prefix, function (r) {
+                var r = r.replace(/&quot;/g, '"');
                 alert(r);
             });
         });
