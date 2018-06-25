@@ -72,6 +72,10 @@ class CallHandler(QObject):
             result += k + ";"
         return result
 
+    @pyqtSlot(str, str, result=str)
+    def get_files(self, bucket_name, bucket_maker):
+        return "get_files --- by python"
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
