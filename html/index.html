@@ -169,6 +169,7 @@
     </div>
 </div>
 <script>
+    var cur_bucket_name = "";
 
     function change_bucket(bucket_name) {
         var a = $(".bucket");
@@ -178,9 +179,14 @@
             var bucket = a.find('a')[i];
             if (bucket.name === bucket_name) {
                 bucket.className = 'active';
+                init_bucket_files(bucket_name);
                 break;
             }
         }
+    }
+
+    function init_bucket_files(bucket_name) {
+        alert(bucket_name);
     }
 
     function new_buckets(r) {
@@ -193,6 +199,13 @@
             return;
         }
         var buckets = r.split(";");
+        if (buckets.length > 0) {
+            cur_bucket_name = buckets[0];
+            init_bucket_files(cur_bucket_name);
+        } else {
+            alert("还没有仓库呢，快去创建一个仓库吧！");
+            return;
+        }
         for (var i = 0, len = buckets.length; i < len; i++) {
             var func_name = 'change_bucket("' + buckets[i] + '")';
             if (buckets[i] !== "") {
