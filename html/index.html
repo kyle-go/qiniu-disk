@@ -170,6 +170,10 @@
 </div>
 <script>
 
+    function change_bucket(bucket_name) {
+        alert(bucket_name);
+    }
+
     function new_buckets(r) {
         if (r === "ERROR") {
             alert("获取空间列表失败了，请检查AccessKey和SecretKey！");
@@ -181,11 +185,12 @@
         }
         var buckets = r.split(";");
         for (var i = 0, len = buckets.length; i < len; i++) {
+            var func_name = 'change_bucket("' + buckets[i] + '")';
             if (buckets[i] !== "") {
                 if (i === 0) {
-                    $(".bucket").append('<a class="active" onclick="">' + buckets[i] + '</a>');
+                    $(".bucket").append('<a class="active" onclick=' + func_name + '>' + buckets[i] + '</a>');
                 } else {
-                    $(".bucket").append('<a onclick="">' + buckets[i] + '</a>');
+                    $(".bucket").append('<a onclick=' + func_name + '>' + buckets[i] + '</a>');
                 }
             }
         }
