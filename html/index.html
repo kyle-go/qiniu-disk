@@ -171,7 +171,16 @@
 <script>
 
     function change_bucket(bucket_name) {
-        alert(bucket_name);
+        var a = $(".bucket");
+        a.find('a').removeClass("active");
+
+        for (var i in a.find('a')) {
+            var bucket = a.find('a')[i];
+            if (bucket.name === bucket_name) {
+                bucket.className = 'active';
+                break;
+            }
+        }
     }
 
     function new_buckets(r) {
@@ -188,9 +197,9 @@
             var func_name = 'change_bucket("' + buckets[i] + '")';
             if (buckets[i] !== "") {
                 if (i === 0) {
-                    $(".bucket").append('<a class="active" onclick=' + func_name + '>' + buckets[i] + '</a>');
+                    $(".bucket").append('<a name="' + buckets[i] + '" class="active" onclick=' + func_name + '>' + buckets[i] + '</a>');
                 } else {
-                    $(".bucket").append('<a onclick=' + func_name + '>' + buckets[i] + '</a>');
+                    $(".bucket").append('<a name="' + buckets[i] + '" onclick=' + func_name + '>' + buckets[i] + '</a>');
                 }
             }
         }
