@@ -80,7 +80,10 @@ class CallHandler(QObject):
             _files = ""
             if 'items' in files:
                 for item in files['items']:
-                    _files += '{"name":"%s", "size":%d, "timestamp":%d},' % (item['key'], item['fsize'], item['putTime'])
+                    filename = item['key']
+                    if bucket_prefix != "" and filename.startswith(bucket_prefix):
+                        filename = filename[len(bucket_prefix):]
+                    _files += '{"name":"%s", "size":%d, "timestamp":%d},' % (filename, item['fsize'], item['putTime'])
                 if len(_files) > 0:
                     _files = _files[:-1]
 
