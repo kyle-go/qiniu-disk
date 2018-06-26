@@ -80,6 +80,10 @@
             text-decoration: none;
         }
 
+        .btn {
+            font-size: 14px;
+        }
+
         .btn-loadmore {
             font-size: 12px;
             /*color: #1989fa;*/
@@ -328,9 +332,9 @@
             '<td>' + storagestr + '</td>' +
             '<td>' + timestr + '</td>' +
             '<td>' +
-            '<button onclick="">复制链接</button>' + '\n' +
-            '<button onclick="">下载</button>' + '\n' +
-            '<button onclick="">删除</button>' +
+            '<button onclick="" type="button" class="btn btn-primary">复制链接</button>' + '\n' +
+            '<button onclick="" type="button" class="btn btn-primary">下载</button>' + '\n' +
+            '<button onclick="" type="button" class="btn btn-danger">删除</button>' +
             '</td>' +
             '</tr>';
     }
