@@ -89,6 +89,7 @@
             padding: 8px;
             cursor: pointer;
         }
+
         .btn-loadmore:hover {
             background-color: dodgerblue;
         }
@@ -356,7 +357,11 @@
         });
     }
 
-    function new_buckets(r) {
+    function loadMoreFile() {
+
+    }
+
+    function new_bucket_bar(r) {
         if (r === "ERROR") {
             alert("获取空间列表失败了，请检查AccessKey和SecretKey！");
             return;
@@ -406,7 +411,7 @@
             });
             //get buckets
             channel.objects.handler.get_buckets(function (r) {
-                new_buckets(r);
+                new_bucket_bar(r);
             });
         });
         $('#setting-modal').modal('toggle');
@@ -419,7 +424,7 @@
         //get buckets
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_buckets(function (r) {
-                new_buckets(r);
+                new_bucket_bar(r);
             });
         });
     }
