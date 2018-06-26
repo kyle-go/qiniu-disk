@@ -61,17 +61,19 @@
             margin: 10px;
             font-size: 14px;
         }
+
         .nav a {
-             cursor: pointer;
+            cursor: pointer;
         }
-        .nav span{
+
+        .nav span {
             padding: 0 5px;
         }
 
         td {
             font-size: 14px;
         }
-        
+
         td a {
             cursor: pointer;
             text-decoration: none;
@@ -253,7 +255,42 @@
             icon = 'images/FolderType.png';
             name = '<a onclick="enter_folder(\'' + name + '\')" >' + name.slice(0, -1) + '</a>';
         } else {
-            //
+            //判断当前字符串是否以str结束
+            if (typeof String.prototype.endsWithIgnoreCase !== 'function') {
+                String.prototype.endsWithIgnoreCase = function (str) {
+                    if (typeof(str) !== 'string' || str.length > this.length) {
+                        return false;
+                    }
+                    return this.slice(-str.length).toLowerCase() === str.toLowerCase();
+                };
+            }
+
+            if (name.endsWithIgnoreCase(".apk")) {
+                icon = "images/ApkType.png";
+            } else if (name.endsWithIgnoreCase(".doc")) {
+                icon = "images/DocType.png";
+            } else if (name.endsWithIgnoreCase(".exe")) {
+                icon = "images/ExeType.png";
+            } else if (name.endsWithIgnoreCase(".png") || name.endsWithIgnoreCase(".jpg") ||
+                name.endsWithIgnoreCase(".jpeg") || name.endsWithIgnoreCase(".bmp")) {
+                icon = "images/ImgType.png";
+            } else if (name.endsWithIgnoreCase(".ppt")) {
+                icon = "images/PptType.png";
+            } else if (name.endsWithIgnoreCase(".xls") || name.endsWithIgnoreCase(".xlsx")) {
+                icon = "images/PptType.png";
+            } else if (name.endsWithIgnoreCase(".pdf")) {
+                icon = "images/PdfType.png";
+            } else if (name.endsWithIgnoreCase(".rar") || name.endsWithIgnoreCase(".zip") ||
+                name.endsWithIgnoreCase(".7z")) {
+                icon = "images/RarType.png";
+            } else if (name.endsWithIgnoreCase(".torrent")) {
+                icon = "images/TorrentType.png";
+            } else if (name.endsWithIgnoreCase(".txt")) {
+                icon = "images/TxtType.png";
+            } else if (name.endsWithIgnoreCase(".mp4") || name.endsWithIgnoreCase(".avi") ||
+                name.endsWithIgnoreCase(".rmvb")) {
+                icon = "images/VideoType.png";
+            }
         }
 
         return '<tr>' +
