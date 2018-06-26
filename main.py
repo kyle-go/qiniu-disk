@@ -68,6 +68,8 @@ class CallHandler(QObject):
         result = ""
         for k in buckets:
             result += k + ";"
+        if len(result) > 0:
+            result = result[:-1]
         return result
 
     @pyqtSlot(str, result=str)
@@ -79,6 +81,8 @@ class CallHandler(QObject):
         result = ""
         for k in domains:
             result += k + ";"
+        if len(result) > 0:
+            result = result[:-1]
         return result
 
     @pyqtSlot(str, str, str, result=str)
