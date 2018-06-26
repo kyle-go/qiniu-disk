@@ -57,6 +57,10 @@
             border-bottom: 3px solid rgb(77, 111, 235);
         }
 
+        td {
+            font-size: 14px;
+        }
+        
         td a {
             cursor: pointer;
             text-decoration: none;
@@ -211,7 +215,6 @@
     }
 
     function enter_folder(folder_name) {
-        alert(folder_name);
         $("#file-list").html("");
         cur_bucket_marker = "";
         cur_bucket_prefix = folder_name;
