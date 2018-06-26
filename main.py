@@ -74,7 +74,7 @@ class CallHandler(QObject):
 
     @pyqtSlot(str, str, str, result=str)
     def get_files(self, bucket_name, bucket_marker, bucket_prefix):
-        ret, files = get_bucket_files(ak, sk, bucket_name, bucket_marker, 10, bucket_prefix)
+        ret, files = get_bucket_files(ak, sk, bucket_name, bucket_marker, 20, bucket_prefix)
         if ret is True:
             # 获取文件列表
             _files = ""
