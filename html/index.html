@@ -13,6 +13,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
+            font-size: 14px;
             font-family: "Century Gothic", "Segoe UI", Arial, "Microsoft YaHei", Sans-Serif;
         }
 
@@ -81,7 +82,12 @@
         }
 
         .btn {
-            font-size: 14px;
+            font-size: 12px;
+        }
+
+        .site-select {
+            margin: 10px 0 0 10px;
+            text-align: left;
         }
 
         .btn-loadmore {
@@ -115,6 +121,7 @@
             color: #444;
         }
 
+
     </style>
 </head>
 
@@ -140,6 +147,13 @@
 </nav>
 <div class="div-content">
     <div class="header-container bucket">
+    </div>
+    <div class="site-select">
+        <span>域名选择:</span>
+        <select>
+            <option>abc</option>
+            <option>abc2</option>
+        </select>
     </div>
     <div class="nav">
         <a class="text-primary" onclick="enter_folder('')">全部文件</a>
@@ -449,6 +463,7 @@
             });
         });
     }
+
 </script>
 </body>
 
