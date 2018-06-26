@@ -72,11 +72,25 @@
 
         td {
             font-size: 14px;
+            border-bottom: 1px solid lightgrey;
         }
 
         td a {
             cursor: pointer;
             text-decoration: none;
+        }
+
+        .btn-loadmore {
+            font-size: 12px;
+            /*color: #1989fa;*/
+            background-color: rgba(25, 137, 250, .04);
+            border: 1px solid rgba(25, 137, 250, .4);
+            border-radius: 20px;
+            padding: 8px;
+            cursor: pointer;
+        }
+        .btn-loadmore:hover {
+            background-color: dodgerblue;
         }
 
         .footer-container {
@@ -140,7 +154,7 @@
             <tbody id="file-list">
             </tbody>
         </table>
-        <span>加载更多</span>
+        <a class="btn-loadmore text-primary" onclick="loadMoreFile()">加载更多</a>
     </div>
 
     <div class="footer-container">
