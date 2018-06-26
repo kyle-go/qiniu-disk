@@ -85,7 +85,7 @@
             font-size: 12px;
         }
 
-        .site-select {
+        .site-select-div {
             margin: 10px 0 0 10px;
             text-align: left;
         }
@@ -148,11 +148,9 @@
 <div class="div-content">
     <div class="header-container bucket">
     </div>
-    <div class="site-select">
+    <div class="site-select-div">
         <span>域名选择:</span>
-        <select>
-            <option>abc</option>
-            <option>abc2</option>
+        <select class="site-select">
         </select>
     </div>
     <div class="nav">
@@ -242,6 +240,7 @@
     var cur_bucket_name = "";
     var cur_bucket_marker = "";
     var cur_bucket_prefix = "";
+    var cur_bucket_domain = "";
 
     //切换bucket
     function change_bucket(bucket_name) {
@@ -387,8 +386,38 @@
         });
     }
 
+    //获取bucket域名列表
+    function init_bucket_domains() {
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            alert("abc");
+            channel.objects.handler.get_bucket_domains(cur_bucket_name, function (r) {
+                alert("abc2");
+
+                if (r === "") {
+                    alert("FAILED! 此bucket没有找到域名！");
+                    return;
+                }
+
+                var domains = r.split(";");
+                if (domains.length > 0) {
+                    cur_bucket_domain = domains[0];
+                } else {
+                    alert("FAILED! 此bucket没有找到域名！");
+                    return;
+                }
+
+                var htmlstr = "";
+                for (var i = 0, len = domains.length; i < len; i++) {
+                    htmlstr += '<option>' + domains[i] + '</option>'
+                }
+                $(".site-select").html(htmlstr);
+            });
+        });
+    }
+
     //初始化bucket文件列表
     function init_bucket_files() {
+        init_bucket_domains();
         init_nav_dir();
         loadFile();
 
@@ -397,14 +426,11 @@
     }
 
     function new_bucket_bar(r) {
-        if (r === "ERROR") {
-            alert("获取空间列表失败了，请检查AccessKey和SecretKey！");
+        if (r === "") {
+            alert("没有找到bucket，请创建新bucket 或者 检查AccessKey和SecretKey是否正确！");
             return;
         }
-        if (r === "NONE") {
-            $('#new-bucket-modal').modal();
-            return;
-        }
+
         var buckets = r.split(";");
         if (buckets.length > 0) {
             cur_bucket_name = buckets[0];
