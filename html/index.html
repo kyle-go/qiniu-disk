@@ -13,7 +13,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: "Century Gothic", "Segoe UI" ,Arial, "Microsoft YaHei",Sans-Serif;
+            font-family: "Century Gothic", "Segoe UI", Arial, "Microsoft YaHei", Sans-Serif;
         }
 
         p {
@@ -47,7 +47,7 @@
             text-decoration: none;
             color: #999;
             padding: 1px 5px;
-            cursor:pointer;
+            cursor: pointer;
         }
 
         .bucket .active {
@@ -55,6 +55,11 @@
             color: #ddd;
             padding-bottom: 2px;
             border-bottom: 3px solid rgb(77, 111, 235);
+        }
+
+        td a {
+            cursor: pointer;
+            text-decoration: none;
         }
 
         .footer-container {
@@ -220,7 +225,7 @@
         // file
         if (size === 0 && timestamp === 0) {
             icon = 'images/FolderType.png';
-            name = name.slice(0, -1);
+            name = '<a class="a-folder">' + name.slice(0, -1) + '</a>';
         } else {
             //
         }
