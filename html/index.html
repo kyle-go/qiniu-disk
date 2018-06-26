@@ -387,14 +387,9 @@
     }
 
     //获取bucket域名列表
-    function init_bucket_domains() {
-        window.clearInterval();
-        alert("abc");
-
+    function init_bucket_domains(lf) {
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_bucket_domains(cur_bucket_name, function (r) {
-                alert("abc2");
-
                 if (r === "") {
                     alert("FAILED! 此bucket没有找到域名！");
                     return;
@@ -413,16 +408,15 @@
                     htmlstr += '<option>' + domains[i] + '</option>'
                 }
                 $(".site-select").html(htmlstr);
+                lf();
             });
         });
     }
 
     //初始化bucket文件列表
     function init_bucket_files() {
-        window.setInterval("init_bucket_domains()", 1);
-
         init_nav_dir();
-        loadFile();
+        init_bucket_domains(loadFile);
 
         $(".btn-loadmore").text("加载更多");
         $(".btn-loadmore").attr("onclick", "loadFile();");
