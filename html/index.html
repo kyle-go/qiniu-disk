@@ -114,10 +114,7 @@
             <tbody id="file-list">
             </tbody>
         </table>
-
-        <ul id="paging" class="pagination">
-        </ul>
-
+        <span>加载更多</span>
     </div>
 
     <div class="footer-container">
@@ -217,8 +214,18 @@
         if (timestamp > 0) {
             timestr = timestamp2timestr(timestamp / 10000000);
         }
+
+        var icon = "images/OtherType.png";
+        // file
+        if (size === 0 && timestamp === 0) {
+            icon = 'images/FolderType.png';
+            name = name.slice(0, -1);
+        } else {
+            //
+        }
+
         return '<tr>' +
-            '<td>' + name + '</td>' +
+            '<td>' + '<img src="' + icon + '" />' + name + '</td>' +
             '<td>' + storagestr + '</td>' +
             '<td>' + timestr + '</td>' +
             '<td>' +
@@ -238,7 +245,7 @@
                 //alert(obj.marker);
                 var html_str = "";
                 for (var f in obj.directories) {
-                    html_str += bucket_file_html(obj.directories[f], "--", 0);
+                    html_str += bucket_file_html(obj.directories[f], 0, 0);
                 }
                 for (var f in obj.files) {
                     html_str += bucket_file_html(obj.files[f].name, obj.files[f].size, obj.files[f].timestamp);
