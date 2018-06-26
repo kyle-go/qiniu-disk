@@ -209,13 +209,17 @@
 
     //bucket file html代码
     function bucket_file_html(name, size, timestamp) {
+        var storagestr = "--";
+        if (size > 0) {
+            storagestr = get_human_storage(size);
+        }
         var timestr = "--";
         if (timestamp > 0) {
             timestr = timestamp2timestr(timestamp / 10000000);
         }
         return '<tr>' +
             '<td>' + name + '</td>' +
-            '<td>' + get_human_storage(size) + '</td>' +
+            '<td>' + storagestr + '</td>' +
             '<td>' + timestr + '</td>' +
             '<td>' +
             '<button onclick="">下载</button>' + '\n' +
