@@ -42,9 +42,9 @@ def init():
     # 检查AccessKey和SecretKey
     ak, sk = get_config()
     if ak is None:
-        web_view.page().runJavaScript('show_setting_dialog();', lambda v: print(v))
+        web_view.page().runJavaScript('show_setting_dialog();')
         return
-    web_view.page().runJavaScript('set_keys("%s", "%s");' % (ak, sk), lambda v: print(v))
+    web_view.page().runJavaScript('set_keys("%s", "%s");' % (ak, sk))
 
 
 # js -> python
