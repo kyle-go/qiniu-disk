@@ -6,10 +6,10 @@
     <title>七牛个人网盘</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="qwebchannel.js"></script>
-    <link href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
@@ -55,11 +55,6 @@
             border-bottom: 3px solid rgb(77, 111, 235);
         }
 
-        .container {
-            color: #555;
-            margin-top: 20px;
-        }
-
         .footer-container {
             margin-top: 20px;
             padding: 15px;
@@ -103,9 +98,27 @@
 <div class="div-content">
     <div class="header-container bucket">
     </div>
-    <div class="container">
-        <h2>The Files</h2>
+
+    <div class="file-list-container">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>文件名</th>
+                <th>大小</th>
+                <th>最后更新</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody id="file-list">
+            </tbody>
+        </table>
+
+        <ul id="paging" class="pagination">
+        </ul>
+
     </div>
+
     <div class="footer-container">
             <span class="ft-span">
                 <a href="https://kyle.net.cn" target="_blank">©2018 https://kyle.net.cn All right reserved.</a>
@@ -173,6 +186,7 @@
     var cur_bucket_marker = "";
     var cur_bucket_prefix = "";
 
+    //切换bucket
     function change_bucket(bucket_name) {
         var a = $(".bucket");
         a.find('a').removeClass("active");
@@ -181,26 +195,46 @@
             var bucket = a.find('a')[i];
             if (bucket.name === bucket_name) {
                 bucket.className = 'active';
-                init_bucket_files(bucket_name);
+
+                cur_bucket_name = bucket_name;
+                cur_bucket_marker = "";
+                cur_bucket_prefix = "";
+                $("#file-list").html("");
+                init_bucket_files();
                 break;
             }
         }
     }
 
-    function init_bucket_files(bucket_name) {
+    //bucket file html代码
+    function bucket_file_html(name, size, timestamp) {
+        return '<tr>' +
+            '<td>' + name + '</td>' +
+            '<td>' + size + '</td>' +
+            '<td>' + timestamp + '</td>' +
+            '<td>' +
+            '<button onclick="">下载</button>' + '\n' +
+            '<button onclick="">删除</button>' +
+            '</td>' +
+            '</tr>';
+    }
+
+    //初始化bucket文件列表
+    function init_bucket_files() {
         //get files
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_files(cur_bucket_name, cur_bucket_marker, cur_bucket_prefix, function (r) {
                 var obj = JSON.parse(r);
                 //alert(obj.status);
                 //alert(obj.marker);
-                for (var f in obj.files){
-                    alert(obj.files[f].name);
+                var html_str = "";
+                for (var f in obj.directories) {
+                    html_str += bucket_file_html(obj.directories[f], "--", 0);
                 }
-
-                for (var f in obj.directories){
-                    alert(obj.directories[f]);
+                for (var f in obj.files) {
+                    html_str += bucket_file_html(obj.files[f].name, obj.files[f].size, obj.files[f].timestamp);
                 }
+                $("#file-list").html(html_str);
             });
         });
     }
@@ -217,7 +251,7 @@
         var buckets = r.split(";");
         if (buckets.length > 0) {
             cur_bucket_name = buckets[0];
-            init_bucket_files(cur_bucket_name);
+            init_bucket_files();
         } else {
             alert("还没有仓库呢，快去创建一个仓库吧！");
             return;

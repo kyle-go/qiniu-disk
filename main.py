@@ -85,10 +85,11 @@ class CallHandler(QObject):
 
             # 获取目录列表
             directories = ""
-            for item in files['commonPrefixes']:
-                directories += '"%s",' % item
-            if len(directories) > 0:
-                directories = directories[:-1]
+            if 'commonPrefixes' in files:
+                for item in files['commonPrefixes']:
+                    directories += '"%s",' % item
+                if len(directories) > 0:
+                    directories = directories[:-1]
             return '{"status":0, "files":[%s], "directories":[%s], "marker":"%s"}' % (_files, directories, files['marker'])
         else:
             return '{"status":-1}'
