@@ -438,12 +438,10 @@
         }
         for (var i = 0, len = buckets.length; i < len; i++) {
             var func_name = 'change_bucket("' + buckets[i] + '")';
-            if (buckets[i] !== "") {
-                if (i === 0) {
-                    $(".bucket").append('<a name="' + buckets[i] + '" class="active" onclick=' + func_name + '>' + buckets[i] + '</a>');
-                } else {
-                    $(".bucket").append('<a name="' + buckets[i] + '" onclick=' + func_name + '>' + buckets[i] + '</a>');
-                }
+            if (i === 0) {
+                $(".bucket").append('<a name="' + buckets[i] + '" class="active" onclick=' + func_name + '>' + buckets[i] + '</a>');
+            } else {
+                $(".bucket").append('<a name="' + buckets[i] + '" onclick=' + func_name + '>' + buckets[i] + '</a>');
             }
         }
     }
