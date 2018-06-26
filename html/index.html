@@ -123,9 +123,8 @@
     <div class="header-container bucket">
     </div>
     <div class="nav">
-        <a class="text-primary">全部文件</a>
+        <a class="text-primary" onclick="enter_folder('')">全部文件</a>
         <span class="text-secondary"> > </span>
-        <a class="text-primary">app-manager</a>
     </div>
     <div class="file-list-container">
         <table class="table table-hover">
@@ -231,10 +230,26 @@
         }
     }
 
-    function enter_folder(folder_name) {
-        $("#file-list").html("");
+    function init_nav_dir() {
+        var html_str = '<a class="text-primary" onclick="enter_folder(\'\')">全部文件</a>' +
+            '<span class="text-secondary"> > </span>';
+        if (cur_bucket_prefix.length > 0) {
+            var folder_name = cur_bucket_prefix.slice(0, -1).split("/");
+            var tmp_dir = "";
+            for (var f in folder_name) {
+                tmp_dir += folder_name[f] + "/";
+                html_str += '<a class="text-primary" onclick="enter_folder(\'' + tmp_dir + '\')">' + folder_name[f] + '</a>';
+                html_str += '<span class="text-secondary"> > </span>';
+            }
+        }
+
+        $(".nav").html(html_str);
+    }
+
+    function enter_folder(name) {
         cur_bucket_marker = "";
-        cur_bucket_prefix = folder_name;
+        cur_bucket_prefix = name;
+        $("#file-list").html("");
         init_bucket_files();
     }
 
@@ -307,6 +322,8 @@
 
     //初始化bucket文件列表
     function init_bucket_files() {
+        init_nav_dir();
+
         //get files
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_files(cur_bucket_name, cur_bucket_marker, cur_bucket_prefix, function (r) {
