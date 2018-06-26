@@ -210,6 +210,14 @@
         }
     }
 
+    function enter_folder(folder_name) {
+        alert(folder_name);
+        $("#file-list").html("");
+        cur_bucket_marker = "";
+        cur_bucket_prefix = folder_name;
+        init_bucket_files();
+    }
+
     //bucket file html代码
     function bucket_file_html(name, size, timestamp) {
         var storagestr = "--";
@@ -225,7 +233,7 @@
         // file
         if (size === 0 && timestamp === 0) {
             icon = 'images/FolderType.png';
-            name = '<a class="a-folder">' + name.slice(0, -1) + '</a>';
+            name = '<a onclick="enter_folder(\'' + name + '\')" >' + name.slice(0, -1) + '</a>';
         } else {
             //
         }
