@@ -78,10 +78,11 @@ class CallHandler(QObject):
         if ret is True:
             # 获取文件列表
             _files = ""
-            for item in files['items']:
-                _files += '{"name":"%s", "size":%d, "timestamp":%d},' % (item['key'], item['fsize'], item['putTime'])
-            if len(_files) > 0:
-                _files = _files[:-1]
+            if 'items' in files:
+                for item in files['items']:
+                    _files += '{"name":"%s", "size":%d, "timestamp":%d},' % (item['key'], item['fsize'], item['putTime'])
+                if len(_files) > 0:
+                    _files = _files[:-1]
 
             # 获取目录列表
             directories = ""
@@ -90,7 +91,11 @@ class CallHandler(QObject):
                     directories += '"%s",' % item
                 if len(directories) > 0:
                     directories = directories[:-1]
-            return '{"status":0, "files":[%s], "directories":[%s], "marker":"%s"}' % (_files, directories, files['marker'])
+
+            marker = ""
+            if 'marker' in files:
+                marker = files['marker']
+            return '{"status":0, "files":[%s], "directories":[%s], "marker":"%s"}' % (_files, directories, marker)
         else:
             return '{"status":-1}'
 
