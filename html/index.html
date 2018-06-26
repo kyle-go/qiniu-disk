@@ -391,6 +391,7 @@
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_bucket_domains(cur_bucket_name, function (r) {
                 if (r === "") {
+                    $(".site-select").html("");
                     alert("FAILED! 此bucket没有找到域名！");
                     return;
                 }
@@ -399,6 +400,7 @@
                 if (domains.length > 0) {
                     cur_bucket_domain = domains[0];
                 } else {
+                    $(".site-select").html("");
                     alert("FAILED! 此bucket没有找到域名！");
                     return;
                 }
