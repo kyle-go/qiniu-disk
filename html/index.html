@@ -155,7 +155,7 @@
             <tbody id="file-list">
             </tbody>
         </table>
-        <a class="btn-loadmore text-primary" onclick="loadMoreFile()">加载更多</a>
+        <a class="btn-loadmore text-primary" onclick="loadFile()">加载更多</a>
     </div>
 
     <div class="footer-container">
@@ -335,30 +335,47 @@
             '</tr>';
     }
 
-    //初始化bucket文件列表
-    function init_bucket_files() {
-        init_nav_dir();
-
+    function loadFile() {
         //get files
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_files(cur_bucket_name, cur_bucket_marker, cur_bucket_prefix, function (r) {
                 var obj = JSON.parse(r);
-                //alert(obj.status);
-                //alert(obj.marker);
                 var html_str = "";
-                for (var f in obj.directories) {
-                    html_str += bucket_file_html(obj.directories[f], 0, 0);
+                var item_count = 0;
+                for (var d in obj.directories) {
+                    html_str += bucket_file_html(obj.directories[d], 0, 0);
+                    item_count += 1;
                 }
                 for (var f in obj.files) {
                     html_str += bucket_file_html(obj.files[f].name, obj.files[f].size, obj.files[f].timestamp);
+                    item_count += 1;
                 }
-                $("#file-list").html(html_str);
+
+                if (html_str !== "") {
+                    if (cur_bucket_marker !== "") {
+                        $("#file-list").append(html_str);
+                    } else {
+                        $("#file-list").html(html_str);
+                    }
+                }
+
+                if (item_count < 20) {
+                    $(".btn-loadmore").text("没有了");
+                    $(".btn-loadmore").removeAttr("onclick");
+                }
+
+                cur_bucket_marker = obj.marker;
             });
         });
     }
 
-    function loadMoreFile() {
+    //初始化bucket文件列表
+    function init_bucket_files() {
+        init_nav_dir();
+        loadFile();
 
+        $(".btn-loadmore").text("加载更多");
+        $(".btn-loadmore").attr("onclick", "loadFile();");
     }
 
     function new_bucket_bar(r) {
