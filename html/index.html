@@ -57,6 +57,17 @@
             border-bottom: 3px solid rgb(77, 111, 235);
         }
 
+        .nav {
+            margin: 10px;
+            font-size: 14px;
+        }
+        .nav a {
+             cursor: pointer;
+        }
+        .nav span{
+            padding: 0 5px;
+        }
+
         td {
             font-size: 14px;
         }
@@ -109,7 +120,11 @@
 <div class="div-content">
     <div class="header-container bucket">
     </div>
-
+    <div class="nav">
+        <a class="text-primary">全部文件</a>
+        <span class="text-secondary"> > </span>
+        <a class="text-primary">app-manager</a>
+    </div>
     <div class="file-list-container">
         <table class="table table-hover">
             <thead>
