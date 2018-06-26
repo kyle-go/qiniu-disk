@@ -13,3 +13,18 @@ function timestamp2timestr(timestamp) {
     return date.getUTCFullYear() + "-" + fix(date.getUTCMonth() + 1, 2) + "-" + fix(date.getUTCDate(), 2) + " " + fix(date.getUTCHours(), 2) + ":" + fix(date.getUTCMinutes(), 2) + ":" + fix(date.getUTCSeconds(), 2);
 }
 
+// 字节转换为合适的单位
+function get_human_storage(size) {
+    if (size < 1024) {
+        return size + "B";
+    }
+    if (size < 1024 * 1024) {
+        return (size / 1024.0).toFixed(2) + "KB";
+    }
+    if (size < 1024 * 1024 * 1024) {
+        return (size / 1024.0 / 1024.0).toFixed(2) + "MB";
+    }
+    if (size < 1024 * 1024 * 1024 * 1024) {
+        return (size / 1024.0 / 1024.0 / 1024.0).toFixed(2) + "GB";
+    }
+}

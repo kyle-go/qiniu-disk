@@ -211,11 +211,11 @@
     function bucket_file_html(name, size, timestamp) {
         var timestr = "--";
         if (timestamp > 0) {
-            timestr = timestamp2timestr(timestamp/10000000);
+            timestr = timestamp2timestr(timestamp / 10000000);
         }
         return '<tr>' +
             '<td>' + name + '</td>' +
-            '<td>' + size + '</td>' +
+            '<td>' + get_human_storage(size) + '</td>' +
             '<td>' + timestr + '</td>' +
             '<td>' +
             '<button onclick="">下载</button>' + '\n' +
