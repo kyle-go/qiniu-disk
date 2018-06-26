@@ -9,6 +9,7 @@
     <script src="https://cdn.bootcss.com/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="qwebchannel.js"></script>
+    <script src="utils.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -211,7 +212,7 @@
         return '<tr>' +
             '<td>' + name + '</td>' +
             '<td>' + size + '</td>' +
-            '<td>' + timestamp + '</td>' +
+            '<td>' + timestamp2timestr(timestamp/10000000) + '</td>' +
             '<td>' +
             '<button onclick="">下载</button>' + '\n' +
             '<button onclick="">删除</button>' +
