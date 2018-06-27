@@ -299,7 +299,7 @@
         var icon = "images/OtherType.png";
         if (size === 0 && timestamp === 0) {
             icon = 'images/FolderType.png';
-            name = '<a onclick="enter_folder(\'' + name + '\')" >' + name.slice(0, -1) + '</a>';
+            name = '<a onclick="enter_folder(\'' + cur_bucket_prefix + name + '\')" >' + name.slice(0, -1) + '</a>';
         } else {
             //判断当前字符串是否以str结束
             if (typeof String.prototype.endsWithIgnoreCase !== 'function') {
