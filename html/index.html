@@ -361,13 +361,7 @@
             icon = 'images/FolderType.png';
             name = '<a onclick="enter_folder(\'' + cur_bucket_prefix + name + '\')" >' + name.slice(0, -1) + '</a>';
         } else {
-            var items = $(".site-select").children();
-            if (items.length === 0) {
-                file_url = ""
-            } else {
-                file_url = "http://" + items[0].text + "/" + cur_bucket_prefix + name;
-            }
-
+            file_url = cur_bucket_prefix + name;
             //判断当前字符串是否以str结束
             if (typeof String.prototype.endsWithIgnoreCase !== 'function') {
                 String.prototype.endsWithIgnoreCase = function (str) {
@@ -413,12 +407,25 @@
             '<td>' + storagestr + '</td>' +
             '<td>' + timestr + '</td>' +
             '<td>' +
-            '<button onclick="alert(\'' + file_url + '\')" type="button" class="btn btn-primary" ' + disabled_attr + '>复制链接</button>' + '\n' +
-            '<button onclick="" type="button" class="btn btn-primary" ' + disabled_attr + '>下载</button>' + '\n' +
+            '<button onclick="copy_url(\'' + file_url + '\')" type="button" class="btn btn-primary" ' + disabled_attr + '>复制链接</button>' + '\n' +
+            '<button onclick="download_url(\'' + file_url + '\')" type="button" class="btn btn-primary" ' + disabled_attr + '>下载</button>' + '\n' +
             '<button onclick="" type="button" class="btn btn-danger" ' + disabled_attr + '>删除</button>' +
             '</td>' +
             '</tr>';
     }
+
+    function copy_url(file) {
+        if (file !== "") {
+            alert("http://" + $(".site-select").val() + "/" + file)
+        }
+    }
+
+    function download_url(file) {
+        if (file !== "") {
+            alert("http://" + $(".site-select").val() + "/" + file)
+        }
+    }
+
 
     function loadFile() {
         //get files
