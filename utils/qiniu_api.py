@@ -54,7 +54,7 @@ def get_bucket_domains(ak, sk, bucket):
 # region 0华东 1华北 2华南 3北美 4东南亚
 def create_bucket(ak, sk, bucket, region=0):
     try:
-        sub_url = "/mkbucketv2/%s/region/%s" % (base64.b64encode(bucket), Region[region])
+        sub_url = "/mkbucketv2/%s/region/%s" % (base64.b64encode(bucket.encode()).decode('utf-8'), Region[region])
         authorization = Auth(ak, sk).token_of_request(sub_url)
         url = "http://rs.qiniu.com%s" % sub_url
         headers = {
@@ -64,11 +64,12 @@ def create_bucket(ak, sk, bucket, region=0):
         }
         response = requests.request("POST", url, headers=headers)
         if response.status_code == 200:
-            return True, bucket
+            return True, 0
         print("qiniu_api.py create_bucket() failed:" + response.text)
+        return False, response.status_code
     except Exception as e:
         print("qiniu_api.py create_bucket() failed:" + str(e))
-    return False, None
+    return False, 0
 
 
 # 获取指定空间资源列表

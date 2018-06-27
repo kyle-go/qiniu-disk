@@ -225,7 +225,8 @@
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="form-control-label">bucket名称:</label>
-                        <input type="text" class="form-control" id="new-bucket">
+                        <input type="text" class="form-control" id="new-bucket"
+                               placeholder="4~63个字符，可包含字母、数字、中划线。(注意不要重名)">
                     </div>
                 </form>
             </div>
@@ -241,6 +242,59 @@
     var cur_bucket_marker = "";
     var cur_bucket_prefix = "";
     var cur_bucket_domain = "";
+
+    //创建bucket
+    function create_bucket() {
+        var bucket_name = $('#new-bucket').val();
+        if (bucket_name.length < 4 || bucket_name.length > 63) {
+            alert("bucket名称必须为4~63个字符!");
+            return;
+        }
+
+        var re = /^[0-9a-zA-Z\-]*$/g;
+        if (!re.test(bucket_name)) {
+            alert("bucket名称只能由字母、数字、中划线组成!");
+            return;
+        }
+
+        //get files
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            channel.objects.handler.create_bucket(bucket_name, function (r) {
+                if (r === "True") {
+                    alert("创建bucket成功!");
+                    //get buckets
+                    new QWebChannel(qt.webChannelTransport, function (channel) {
+                        channel.objects.handler.get_buckets(function (r) {
+                            new_bucket_bar(r);
+                        });
+                    });
+                } else {
+                    if (r === '403') {
+                        alert("新建存储空间失败，请先实名认证!");
+                        return;
+                    }
+                    if (r === '614') {
+                        alert("新建存储空间失败，bucket已经存在!");
+                        return;
+                    }
+                    if (r === '400') {
+                        alert("新建存储空间失败，bucket不符合命名规范!");
+                        return;
+                    }
+                    if (r === '401') {
+                        alert("新建存储空间失败，没有传入认证信息!");
+                        return;
+                    }
+                    if (r === '630') {
+                        alert("新建存储空间失败，创建bucket超过最大创建数(默认20个)!");
+                        return;
+                    }
+                    alert("创建bucket失败，请检查AccessKey和SecretKey是否正确!");
+                }
+            });
+        });
+
+    }
 
     //切换bucket
     function change_bucket(bucket_name) {

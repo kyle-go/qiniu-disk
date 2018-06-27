@@ -10,7 +10,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebChannel import QWebChannel
 
 from utils.utils import get_config, save_config
-from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files
+from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files, create_bucket
 
 web_view = None
 ak = None
@@ -117,6 +117,14 @@ class CallHandler(QObject):
             return '{"status":0, "files":[%s], "directories":[%s], "marker":"%s"}' % (_files, directories, marker)
         else:
             return '{"status":-1}'
+
+    @pyqtSlot(str, result=str)
+    def create_bucket(self, bucket_name):
+        ret, result = create_bucket(ak, sk, bucket_name)
+        if ret is True:
+            return "True"
+        else:
+            return str(result)
 
 
 if __name__ == "__main__":
