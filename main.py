@@ -104,7 +104,10 @@ class CallHandler(QObject):
             directories = ""
             if 'commonPrefixes' in files:
                 for item in files['commonPrefixes']:
-                    directories += '"%s",' % item
+                    filename = item
+                    if bucket_prefix != "" and filename.startswith(bucket_prefix):
+                        filename = filename[len(bucket_prefix):]
+                    directories += '"%s",' % filename
                 if len(directories) > 0:
                     directories = directories[:-1]
 
