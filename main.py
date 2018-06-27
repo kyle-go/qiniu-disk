@@ -63,14 +63,17 @@ class CallHandler(QObject):
     def get_buckets(self):
         # 获取仓库列表
         ret, buckets = get_buckets(ak, sk)
-        if ret is False or buckets is None or len(buckets) == 0:
-            return ""
+        if ret is False:
+            return "False"
+        if buckets is None or len(buckets) == 0:
+            return "True"
+
         result = ""
         for k in buckets:
             result += k + ";"
         if len(result) > 0:
             result = result[:-1]
-        return result
+        return "True" + result
 
     @pyqtSlot(str, result=str)
     def get_bucket_domains(self, bucket_name):

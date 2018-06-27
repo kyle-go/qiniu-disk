@@ -485,11 +485,17 @@
     }
 
     function new_bucket_bar(r) {
-        if (r === "") {
-            alert("没有找到bucket，请创建新bucket 或者 检查AccessKey和SecretKey是否正确！");
+        if (r === 'False') {
+            alert("获取bucket失败，请检查AccessKey和SecretKey是否正确！");
             return;
         }
-
+        if (r === "True") {
+            alert("请创建新bucket！");
+            return;
+        }
+        // 去掉True四个字母
+        r = r.slice(4);
+        
         var buckets = r.split(";");
         if (buckets.length > 0) {
             cur_bucket_name = buckets[0];
