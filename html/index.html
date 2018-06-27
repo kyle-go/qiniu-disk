@@ -353,8 +353,10 @@
             timestr = timestamp2timestr(timestamp / 10000000);
         }
 
+        var disabled_attr = "";
         var icon = "images/OtherType.png";
         if (size === 0 && timestamp === 0) {
+            disabled_attr = 'disabled="disabled"';
             icon = 'images/FolderType.png';
             name = '<a onclick="enter_folder(\'' + cur_bucket_prefix + name + '\')" >' + name.slice(0, -1) + '</a>';
         } else {
@@ -403,9 +405,9 @@
             '<td>' + storagestr + '</td>' +
             '<td>' + timestr + '</td>' +
             '<td>' +
-            '<button onclick="" type="button" class="btn btn-primary">复制链接</button>' + '\n' +
-            '<button onclick="" type="button" class="btn btn-primary">下载</button>' + '\n' +
-            '<button onclick="" type="button" class="btn btn-danger">删除</button>' +
+            '<button onclick="" type="button" class="btn btn-primary" ' + disabled_attr + '>复制链接</button>' + '\n' +
+            '<button onclick="" type="button" class="btn btn-primary" ' + disabled_attr + '>下载</button>' + '\n' +
+            '<button onclick="" type="button" class="btn btn-danger" ' + disabled_attr + '>删除</button>' +
             '</td>' +
             '</tr>';
     }
