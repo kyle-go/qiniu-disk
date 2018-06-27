@@ -63,7 +63,7 @@ class CallHandler(QObject):
     def get_buckets(self):
         # 获取仓库列表
         ret, buckets = get_buckets(ak, sk)
-        if ret is False or len(buckets) == 0:
+        if ret is False or buckets is None or len(buckets) == 0:
             return ""
         result = ""
         for k in buckets:
