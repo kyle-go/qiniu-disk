@@ -79,7 +79,7 @@ class CallHandler(QObject):
     def get_bucket_domains(self, bucket_name):
         # 获取仓库域名列表
         ret, domains = get_bucket_domains(ak, sk, bucket_name)
-        if ret is False or len(domains) == 0:
+        if ret is False or domains is None or len(domains) == 0:
             return ""
         result = ""
         for k in domains:
