@@ -313,7 +313,7 @@
                 cur_bucket_marker = "";
                 cur_bucket_prefix = "";
                 $("#file-list").html("");
-                init_bucket_files();
+                init_bucket_domains(init_bucket_files);
                 break;
             }
         }
@@ -493,8 +493,7 @@
     //初始化bucket文件列表
     function init_bucket_files() {
         init_nav_dir();
-        init_bucket_domains(loadFile);
-
+        loadFile();
         $(".btn-loadmore").text("加载更多");
         $(".btn-loadmore").attr("onclick", "loadFile();");
     }
@@ -514,7 +513,7 @@
         var buckets = r.split(";");
         if (buckets.length > 0) {
             cur_bucket_name = buckets[0];
-            init_bucket_files();
+            init_bucket_domains(init_bucket_files);
         } else {
             alert("还没有仓库呢，快去创建一个仓库吧！");
             return;
