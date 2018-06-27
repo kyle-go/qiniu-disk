@@ -260,8 +260,11 @@
         //get files
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.create_bucket(bucket_name, function (r) {
+                $('#new-bucket-modal').modal('toggle');
+
                 if (r === "True") {
                     alert("创建bucket成功!");
+                    $(".bucket").html("");
                     //get buckets
                     new QWebChannel(qt.webChannelTransport, function (channel) {
                         channel.objects.handler.get_buckets(function (r) {
