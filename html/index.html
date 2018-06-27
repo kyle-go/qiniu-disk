@@ -535,7 +535,6 @@
             return
         }
 
-        //call python
         new QWebChannel(qt.webChannelTransport, function (channel) {
             //save access_key and secret_key
             channel.objects.handler.save_keys(ak, sk, function (r) {
