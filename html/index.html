@@ -361,7 +361,7 @@
     //bucket file html代码
     function bucket_file_html(name, size, timestamp) {
         var storagestr = "--";
-        if (size > 0) {
+        if (size >= 0) {
             storagestr = get_human_storage(size);
         }
         var timestr = "--";
