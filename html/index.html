@@ -415,14 +415,24 @@
     }
 
     function copy_url(file) {
-        if (file !== "") {
-            alert("http://" + $(".site-select").val() + "/" + file)
+        var domain = $(".site-select").val();
+        if (file !== "" && domain !== "") {
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                channel.objects.handler.copy_url("http://" + domain + "/" + file, function (r) {
+                    alert("复制链接成功！");
+                });
+            });
+        } else {
+            alert("复制链接失败，请检查域名！");
         }
     }
 
     function download_url(file) {
-        if (file !== "") {
-            alert("http://" + $(".site-select").val() + "/" + file)
+        var domain = $(".site-select").val();
+        if (file !== "" && domain !== "") {
+            alert("http://" + domain + "/" + file)
+        } else {
+            alert("下载失败，请检查域名！");
         }
     }
 

@@ -129,6 +129,11 @@ class CallHandler(QObject):
         else:
             return str(result)
 
+    @pyqtSlot(str, result=str)
+    def copy_url(self, url):
+        QtWidgets.QApplication.clipboard().setText(url)
+        return "True"
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
