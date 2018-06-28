@@ -369,10 +369,12 @@
             timestr = timestamp2timestr(timestamp / 10000000);
         }
 
+        var is_file = 1;
         var file_url = "";
         var disabled_attr = "";
         var icon = "images/OtherType.png";
         if (size === 0 && timestamp === 0) {
+            is_file = 0;
             disabled_attr = 'disabled="disabled"';
             icon = 'images/FolderType.png';
             name = '<a onclick="enter_folder(\'' + cur_bucket_prefix + name + '\')" >' + name.slice(0, -1) + '</a>';
@@ -419,7 +421,7 @@
         }
 
         return '<tr>' +
-            '<td class="text-left">' + '<img src="' + icon + '" />' + name + '</td>' +
+            '<td class="text-left" is_file="' + is_file + '">' + '<img src="' + icon + '" />' + name + '</td>' +
             '<td>' + storagestr + '</td>' +
             '<td>' + timestr + '</td>' +
             '<td>' +
@@ -467,6 +469,23 @@
                     $("#delete-url").fadeTo(2000, 500).slideUp(500, function () {
                         $(this).slideUp(500);
                     });
+
+                    //找到被删除的item
+                    var name = file;
+                    var pos = file.lastIndexOf('/');
+                    if (pos !== -1) {
+                        name = file.slice(pos + 1);
+                    }
+
+                    var items = $("tr").find("td");
+                    for (var item in items) {
+                        if (items[item].innerText === name &&
+                            items[item].hasAttribute('is_file') &&
+                            items[item].getAttribute('is_file') === "1") {
+                            items[item].parentElement.remove();
+                            break;
+                        }
+                    }
                 });
             });
         } else {
