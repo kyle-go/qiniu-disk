@@ -119,10 +119,10 @@
             color: #444;
         }
 
-        #copy-url, #download-url {
+        #copy-url, #download-url, #delete-url {
             position: absolute;
             top: 20%;
-            left:50%;
+            left: 50%;
             margin-left: -80px;
             width: 160px;
             text-align: center;
@@ -138,6 +138,9 @@
 </div>
 <div class="alert alert-success" id="download-url">
     <strong>下载中...</strong>
+</div>
+<div class="alert alert-success" id="delete-url">
+    <strong>删除成功!</strong>
 </div>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="#">七牛个人网盘</a>
@@ -422,7 +425,7 @@
             '<td>' +
             '<button onclick="copy_url(\'' + file_url + '\')" type="button" class="btn btn-primary" ' + disabled_attr + '>复制链接</button>' + '\n' +
             '<button onclick="download_url(\'' + file_url + '\')" type="button" class="btn btn-primary" ' + disabled_attr + '>下载</button>' + '\n' +
-            '<button onclick="" type="button" class="btn btn-danger" ' + disabled_attr + '>删除</button>' +
+            '<button onclick="delete_url(\'' + file_url + '\')" type="button" class="btn btn-danger" ' + disabled_attr + '>删除</button>' +
             '</td>' +
             '</tr>';
     }
@@ -457,6 +460,19 @@
         }
     }
 
+    function delete_url(file) {
+        if (file !== "") {
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                channel.objects.handler.delete_url(cur_bucket_name, file, function (r) {
+                    $("#delete-url").fadeTo(2000, 500).slideUp(500, function () {
+                        $(this).slideUp(500);
+                    });
+                });
+            });
+        } else {
+            alert("删除失败，请检查域名！");
+        }
+    }
 
     function loadFile() {
         //get files

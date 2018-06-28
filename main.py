@@ -10,7 +10,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebChannel import QWebChannel
 
 from utils.utils import get_config, save_config
-from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files, create_bucket
+from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files, create_bucket, delete_bucket_file
 
 web_view = None
 ak = None
@@ -126,8 +126,7 @@ class CallHandler(QObject):
         ret, result = create_bucket(ak, sk, bucket_name)
         if ret is True:
             return "True"
-        else:
-            return str(result)
+        return str(result)
 
     @pyqtSlot(str, result=str)
     def copy_url(self, url):
@@ -137,6 +136,13 @@ class CallHandler(QObject):
     @pyqtSlot(str, result=str)
     def download_url(self, url):
         return "True"
+
+    @pyqtSlot(str, str, result=str)
+    def delete_url(self, bucket, file):
+        ret, result = delete_bucket_file(ak, sk, bucket, file)
+        if ret is True:
+            return True
+        return str(result)
 
 
 if __name__ == "__main__":
