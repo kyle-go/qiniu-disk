@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>七牛个人网盘</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="qwebchannel.js"></script>
@@ -60,7 +60,6 @@
 
         .nav {
             margin: 10px;
-            font-size: 14px;
         }
 
         .nav a {
@@ -114,18 +113,29 @@
 
         .ft-span {
             margin: 15px;
-            font-size: 14px;
         }
 
         .modal-body {
             color: #444;
         }
 
+        #copy-url, #download-url {
+            position: absolute;
+            top: 20%;
+            left: 42%;
+            width: 16%;
+        }
 
     </style>
 </head>
 
 <body>
+<div class="alert alert-success" id="copy-url">
+    <strong>复制链接成功!</strong>
+</div>
+<div class="alert alert-success" id="download-url">
+    <strong>下载中...</strong>
+</div>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="#">七牛个人网盘</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
@@ -242,6 +252,11 @@
     var cur_bucket_marker = "";
     var cur_bucket_prefix = "";
     var cur_bucket_domain = "";
+
+    $(document).ready(function () {
+        $("#copy-url").hide();
+        $("#download-url").hide();
+    });
 
     //创建bucket
     function create_bucket() {
@@ -419,7 +434,9 @@
         if (file !== "" && domain !== "") {
             new QWebChannel(qt.webChannelTransport, function (channel) {
                 channel.objects.handler.copy_url("http://" + domain + "/" + file, function (r) {
-                    alert("复制链接成功！");
+                    $("#copy-url").fadeTo(2000, 500).slideUp(500, function () {
+                        $(this).slideUp(500);
+                    });
                 });
             });
         } else {
@@ -432,7 +449,9 @@
         if (file !== "" && domain !== "") {
             new QWebChannel(qt.webChannelTransport, function (channel) {
                 channel.objects.handler.download_url("http://" + domain + "/" + file, function (r) {
-                    alert("下载中...");
+                    $("#download-url").fadeTo(2000, 500).slideUp(500, function () {
+                        $(this).slideUp(500);
+                    });
                 });
             });
         } else {
