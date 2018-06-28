@@ -501,7 +501,7 @@
                 var html_str = "";
                 var item_count = 0;
                 for (var d in obj.directories) {
-                    html_str += bucket_file_html(obj.directories[d], 0, 0);
+                    html_str += bucket_file_html(obj.directories[d], -1, -1);
                     item_count += 1;
                 }
                 for (var f in obj.files) {
