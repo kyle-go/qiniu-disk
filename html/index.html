@@ -430,7 +430,11 @@
     function download_url(file) {
         var domain = $(".site-select").val();
         if (file !== "" && domain !== "") {
-            alert("http://" + domain + "/" + file)
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                channel.objects.handler.download_url("http://" + domain + "/" + file, function (r) {
+                    alert("下载中...");
+                });
+            });
         } else {
             alert("下载失败，请检查域名！");
         }

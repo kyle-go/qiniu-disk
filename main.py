@@ -134,6 +134,10 @@ class CallHandler(QObject):
         QtWidgets.QApplication.clipboard().setText(url)
         return "True"
 
+    @pyqtSlot(str, result=str)
+    def download_url(self, url):
+        return "True"
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
