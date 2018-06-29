@@ -11,6 +11,7 @@
     <script src="https://cdn.bootcss.com/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-select/1.13.1/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="qwebchannel.js"></script>
     <script src="utils.js"></script>
     <style>
@@ -149,10 +150,12 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         <form class="form-inline mt-2 mt-md-0">
-            <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#upload-modal">
+            <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal"
+                    data-target="#upload-list-modal">
                 上传列表
             </button>
-            <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#download-modal">
+            <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal"
+                    data-target="#download-list-modal">
                 下载列表
             </button>
             <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#new-bucket-modal">
@@ -169,7 +172,7 @@
     </div>
 
     <div class="text-left" style="margin: 10px">
-        <button onclick="" type="button" class="btn btn-primary">+ 上传文件</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload-modal">+ 上传文件</button>
         <span style="margin-left: 10px">默认域名:</span>
         <select class="selectpicker"> </select>
     </div>
@@ -207,25 +210,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">上传列表</h5>
+                <h5 class="modal-title">上传文件</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div style="text-align: center; width:300px; height:180px; border: cornsilk 1px solid; ">
-
+                <div style="margin:auto; width:300px; height:180px; border: 1px dashed #BBBBBB;">
+                    <p>
+                        <i class="fa fa-cloud-upload icon-4x"></i>
+                    </p>
                 </div>
-                <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">bucket:</label>
-                        <input type="text" class="form-control" id="upload-bucket">
-                    </div>
-                    <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">路径:</label>
-                        <input type="text" class="form-control" id="upload-folder">
-                    </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
@@ -234,8 +229,29 @@
     </div>
 </div>
 
-<!-- download Modal -->
-<div class="modal fade" id="download-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- upload list Modal -->
+<div class="modal fade" id="upload-list-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">上传列表</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- download list Modal -->
+<div class="modal fade" id="download-list-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
