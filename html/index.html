@@ -8,9 +8,11 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-select/1.13.1/css/bootstrap-select.min.css" rel="stylesheet">
     <script src="qwebchannel.js"></script>
     <script src="utils.js"></script>
-    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-size: 14px;
@@ -84,11 +86,6 @@
             font-size: 12px;
         }
 
-        .site-select-div {
-            margin: 10px 0 0 10px;
-            text-align: left;
-        }
-
         .btn-loadmore {
             font-size: 12px;
             /*color: #1989fa;*/
@@ -153,10 +150,10 @@
         </ul>
         <form class="form-inline mt-2 mt-md-0">
             <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#upload-modal">
-                上传
+                上传列表
             </button>
             <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#download-modal">
-                下载
+                下载列表
             </button>
             <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal" data-target="#new-bucket-modal">
                 新建bucket
@@ -170,10 +167,11 @@
 <div class="div-content">
     <div class="header-container bucket">
     </div>
-    <div class="site-select-div">
-        <span>域名选择:</span>
-        <select class="site-select">
-        </select>
+
+    <div class="text-left" style="margin: 10px">
+        <button onclick="" type="button" class="btn btn-primary">+ 上传文件</button>
+        <span style="margin-left: 10px">默认域名:</span>
+        <select class="selectpicker"> </select>
     </div>
     <div class="nav">
         <a class="text-primary" onclick="enter_folder('')">全部文件</a>
@@ -209,7 +207,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">上传</h5>
+                <h5 class="modal-title">上传列表</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -242,7 +240,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">下载</h5>
+                <h5 class="modal-title">下载列表</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -501,7 +499,7 @@
     }
 
     function copy_url(file) {
-        var domain = $(".site-select").val();
+        var domain = $(".selectpicker").val();
         if (file !== "" && domain !== "") {
             new QWebChannel(qt.webChannelTransport, function (channel) {
                 channel.objects.handler.copy_url("http://" + domain + "/" + file, function (r) {
@@ -516,7 +514,7 @@
     }
 
     function download_url(file) {
-        var domain = $(".site-select").val();
+        var domain = $(".selectpicker").val();
         if (file !== "" && domain !== "") {
             new QWebChannel(qt.webChannelTransport, function (channel) {
                 channel.objects.handler.download_url("http://" + domain + "/" + file, function (r) {
@@ -600,7 +598,7 @@
         new QWebChannel(qt.webChannelTransport, function (channel) {
             channel.objects.handler.get_bucket_domains(cur_bucket_name, function (r) {
                 if (r === "") {
-                    $(".site-select").html("");
+                    $(".selectpicker").html("").selectpicker('refresh');
                     alert("FAILED! 此bucket没有找到域名！");
                     return;
                 }
@@ -609,7 +607,7 @@
                 if (domains.length > 0) {
                     cur_bucket_domain = domains[0];
                 } else {
-                    $(".site-select").html("");
+                    $(".selectpicker").html("").selectpicker('refresh');
                     alert("FAILED! 此bucket没有找到域名！");
                     return;
                 }
@@ -618,7 +616,7 @@
                 for (var i = 0, len = domains.length; i < len; i++) {
                     htmlstr += '<option>' + domains[i] + '</option>'
                 }
-                $(".site-select").html(htmlstr);
+                $(".selectpicker").html(htmlstr).selectpicker('refresh');
                 lf();
             });
         });
