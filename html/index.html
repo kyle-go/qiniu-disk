@@ -221,16 +221,16 @@
             </div>
             <div class="modal-body">
                 <div id="drop-area" style="margin:auto; width:300px; height:180px; border: 1px dashed #BBBBBB;">
-                    <p class="big-icon text-center">
-                        <i class="fa fa-cloud-upload "></i>
+                    <p class="big-icon text-center event-patch">
+                        <i class="fa fa-cloud-upload event-patch"></i>
                     </p>
-                    <p id="drop-area-tips" class="text-center">
-                        <span>拖拽文件到此处，或 <a href="#" onclick="">点击上传</a></span>
+                    <p id="drop-area-tips" class="text-center event-patch">
+                        <span class="event-patch">拖拽文件到此处，或 <a href="#" onclick="" class="event-patch">点击上传</a></span>
                     </p>
-                    <p id="drop-area-will-upload" class="text-center" style="display: none;">
+                    <p id="drop-area-will-upload" class="text-center event-patch" style="display: none;">
                         松开鼠标即开始上传
                     </p>
-                    <p id="drop-area-file-name" class="text-center" style="display: none;">
+                    <p id="drop-area-file-name" class="text-center event-patch" style="display: none;">
                         test.txt 512kb 上传中
                     </p>
                 </div>
@@ -357,6 +357,21 @@
     window.addEventListener("drop", function (e) {
         e.preventDefault();
     }, false);
+
+    // $(".event-patch").on("dragover", function (e) {
+    //     // alert("event-patch");
+    //     // e.stopPropagation();
+    //     // e.preventDefault();
+    //     event.cancelBubble = true;
+    // });
+
+    $(".event-patch").on("dragleave", function (e) {
+        // alert("event-patch");
+        e.stopPropagation();
+        e.preventDefault();
+        // e.cancelBubble = true;
+    });
+
 
     var dragDrop = document.getElementById('drop-area');
 
