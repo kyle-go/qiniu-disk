@@ -220,12 +220,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div style="margin:auto; width:300px; height:180px; border: 1px dashed #BBBBBB;">
+                <div id="drop-area" style="margin:auto; width:300px; height:180px; border: 1px dashed #BBBBBB;">
                     <p class="big-icon text-center">
                         <i class="fa fa-cloud-upload "></i>
                     </p>
-                    <p class="text-center">
+                    <p id="drop-area-tips" class="text-center">
                         <span>拖拽文件到此处，或 <a href="#" onclick="">点击上传</a></span>
+                    </p>
+                    <p id="drop-area-will-upload" class="text-center" style="display: none;">
+                        松开鼠标即开始上传
+                    </p>
+                    <p id="drop-area-file-name" class="text-center" style="display: none;">
+                        test.txt 512kb 上传中
                     </p>
                 </div>
             </div>
@@ -341,6 +347,58 @@
         </div>
     </div>
 </div>
+
+<!--拖拽文件逻辑-->
+<script>
+    //阻止默认文件拖拽行为
+    window.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    }, false);
+    window.addEventListener("drop", function (e) {
+        e.preventDefault();
+    }, false);
+
+    var dragDrop = document.getElementById('drop-area');
+
+    //拖到目标区域
+    dragDrop.addEventListener("dragover", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $("#drop-area-tips").hide();
+        $("#drop-area-will-upload").show();
+        $("#drop-area-file-name").hide();
+    }, false);
+
+    //离开目标区域了
+    dragDrop.addEventListener("dragleave", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $("#drop-area-tips").show();
+        $("#drop-area-will-upload").hide();
+        $("#drop-area-file-name").hide();
+    }, false);
+
+    //开始文件上传
+    dragDrop.addEventListener("drop", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var items = e.dataTransfer.items;
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i].webkitGetAsEntry();
+            if (item) {
+                //判断是否为文件夹
+                if (item.isDirectory) {
+                    console.log("NOT support directory!");
+                } else {
+                    var reader = new FileReader();
+                    reader.readAsBinaryString(items[i].getAsFile());
+                    console.log(reader.result);
+                }
+            }
+        }
+    }, false);
+</script>
 
 <script>
     var cur_bucket_name = "";
