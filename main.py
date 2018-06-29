@@ -141,7 +141,7 @@ class CallHandler(QObject):
     def delete_url(self, bucket, file):
         ret, result = delete_bucket_file(ak, sk, bucket, file)
         if ret is True:
-            return True
+            return "True"
         return str(result)
 
 
