@@ -219,7 +219,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="drop-area-parent">
                 <div id="drop-area" style="margin:auto; width:300px; height:180px; border: 1px dashed #BBBBBB;">
                     <p class="big-icon text-center event-patch">
                         <i class="fa fa-cloud-upload event-patch"></i>
@@ -358,23 +358,8 @@
         e.preventDefault();
     }, false);
 
-    // $(".event-patch").on("dragover", function (e) {
-    //     // alert("event-patch");
-    //     // e.stopPropagation();
-    //     // e.preventDefault();
-    //     event.cancelBubble = true;
-    // });
-
-    $(".event-patch").on("dragleave", function (e) {
-        // alert("event-patch");
-        e.stopPropagation();
-        e.preventDefault();
-        // e.cancelBubble = true;
-    });
-
-
     var dragDrop = document.getElementById('drop-area');
-
+    var drapParent = document.getElementById('drop-area-parent');
     //拖到目标区域
     dragDrop.addEventListener("dragover", function (e) {
         e.stopPropagation();
@@ -386,11 +371,13 @@
 
     //离开目标区域了
     dragDrop.addEventListener("dragleave", function (e) {
+        if (e.fromElement === drapParent) {
+            $("#drop-area-tips").show();
+            $("#drop-area-will-upload").hide();
+            $("#drop-area-file-name").hide();
+        }
         e.stopPropagation();
         e.preventDefault();
-        $("#drop-area-tips").show();
-        $("#drop-area-will-upload").hide();
-        $("#drop-area-file-name").hide();
     }, false);
 
     //开始文件上传
