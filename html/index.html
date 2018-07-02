@@ -362,16 +362,16 @@
     var drapParent = document.getElementById('drop-area-parent');
     //拖到目标区域
     dragDrop.addEventListener("dragover", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
         $("#drop-area-tips").hide();
         $("#drop-area-will-upload").show();
         $("#drop-area-file-name").hide();
+        e.stopPropagation();
+        e.preventDefault();
     }, false);
 
     //离开目标区域了
     dragDrop.addEventListener("dragleave", function (e) {
-        if (e.fromElement === drapParent) {
+        if (e.relatedTarget === drapParent) {
             $("#drop-area-tips").show();
             $("#drop-area-will-upload").hide();
             $("#drop-area-file-name").hide();
