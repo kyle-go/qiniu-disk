@@ -10,7 +10,8 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebChannel import QWebChannel
 
 from utils.utils import get_config, save_config
-from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files, create_bucket, delete_bucket_file
+from utils.qiniu_api import get_buckets, get_bucket_domains, get_bucket_files, create_bucket, delete_bucket_file, \
+    upload_bucket_file
 
 web_view = None
 ak = None
@@ -143,6 +144,13 @@ class CallHandler(QObject):
         if ret is True:
             return "True"
         return str(result)
+
+    @pyqtSlot(str, str, str, str, result=str)
+    def upload_file_data(self, bucket, prefix, name, data):
+        binary_data = bytearray()
+        binary_data.extend(map(ord, data))
+        upload_bucket_file(ak, sk, bucket, prefix, name, binary_data)
+        return "True"
 
 
 if __name__ == "__main__":

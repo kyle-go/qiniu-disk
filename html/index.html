@@ -131,6 +131,7 @@
             font-size: 64px;
             margin-top: 20px;
         }
+
     </style>
 </head>
 
@@ -391,15 +392,25 @@
             if (item) {
                 //判断是否为文件夹
                 if (item.isDirectory) {
-                    console.log("NOT support directory!");
+                    alert("暂不支持文件夹上传呢!");
                 } else {
+                    var name = items[i].getAsFile().name;
                     var reader = new FileReader();
+                    reader.onload = function () {
+                        //上传文件
+                        new QWebChannel(qt.webChannelTransport, function (channel) {
+                            channel.objects.handler.upload_file_data(cur_bucket_name, cur_bucket_prefix, name,
+                                reader.result, function (r) {
+                                    console.log(r);
+                                });
+                        });
+                    };
                     reader.readAsBinaryString(items[i].getAsFile());
-                    console.log(reader.result);
                 }
             }
         }
     }, false);
+
 </script>
 
 <script>
@@ -780,6 +791,7 @@
             });
         });
     }
+
 
 </script>
 </body>

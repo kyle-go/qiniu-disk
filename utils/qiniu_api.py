@@ -5,7 +5,7 @@
 import json
 import base64
 import requests
-from qiniu import Auth, urlsafe_base64_encode
+from qiniu import Auth, urlsafe_base64_encode, put_data
 
 # 空间区域
 Region = ['z0', 'z1', 'z2', 'na0', 'as0']
@@ -112,3 +112,11 @@ def delete_bucket_file(ak, sk, bucket, name):
     except Exception as e:
         print("qiniu_api.py delete_bucket_file() failed:" + str(e))
     return False, None
+
+
+# 上传文件
+def upload_bucket_file(ak, sk, bucket, prefix, name, data):
+    file_name = prefix + name
+    q = Auth(ak, sk)
+    token = q.upload_token(bucket, file_name, 3600)
+    put_data(token, name, data)
