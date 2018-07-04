@@ -119,4 +119,4 @@ def upload_bucket_file(ak, sk, bucket, prefix, name, data):
     file_name = prefix + name
     q = Auth(ak, sk)
     token = q.upload_token(bucket, file_name, 3600)
-    put_data(token, name, data)
+    put_data(token, file_name, data)
