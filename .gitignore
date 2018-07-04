@@ -105,3 +105,6 @@ venv.bak/
 
 # pycharm
 .idea/
+
+# qiniu config.json
+config.json
