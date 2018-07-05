@@ -210,7 +210,9 @@
     </div>
 
     <div class="text-left" style="margin: 10px">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload-modal">+ 上传文件</button>
+        <button onclick="upload_modal_status()" type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#upload-modal">+ 上传文件
+        </button>
         <span style="margin-left: 10px">默认域名:</span>
         <select class="selectpicker"> </select>
     </div>
@@ -254,7 +256,7 @@
                 </button>
             </div>
             <div class="modal-body" id="drop-area-parent">
-                <div id="drop-area" style="margin:auto; width:300px; height:180px; border: 1px dashed #BBBBBB;">
+                <div id="drop-area" style="margin:auto; width:360px; height:180px; border: 1px dashed #BBBBBB;">
                     <p class="big-icon text-center event-patch">
                         <i class="fa fa-cloud-upload event-patch"></i>
                     </p>
@@ -463,6 +465,12 @@
         $("#upload-succeed").fadeTo(2000, 500).slideUp(500, function () {
             $(this).slideUp(500);
         });
+    }
+
+    function upload_modal_status() {
+        $("#drop-area-tips").show();
+        $("#drop-area-will-upload").hide();
+        $("#drop-area-file-name").hide();
     }
 
     $(".select-file").on("change", "input[type='file']", function () {
