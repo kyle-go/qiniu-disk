@@ -117,7 +117,7 @@
             color: #444;
         }
 
-        #copy-url, #download-url, #delete-url {
+        #copy-url, #download-url, #delete-url, #upload-succeed {
             position: fixed;
             top: 20%;
             left: 50%;
@@ -125,6 +125,7 @@
             width: 160px;
             text-align: center;
             display: none;
+            z-index: 9999;
         }
 
         .big-icon {
@@ -144,6 +145,9 @@
 </div>
 <div class="alert alert-success" id="delete-url">
     <strong>删除成功!</strong>
+</div>
+<div class="alert alert-success" id="upload-succeed">
+    <strong>上传成功!</strong>
 </div>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="#">七牛个人网盘</a>
@@ -232,7 +236,7 @@
                         松开鼠标即开始上传
                     </p>
                     <p id="drop-area-file-name" class="text-center event-patch" style="display: none;">
-                        test.txt 512kb 上传中
+                        上传中...
                     </p>
                 </div>
             </div>
@@ -413,11 +417,22 @@
                         });
                     };
                     reader.readAsBinaryString(items[i].getAsFile());
+
+                    $("#drop-area-tips").hide();
+                    $("#drop-area-will-upload").hide();
+                    $("#drop-area-file-name").show();
+                    $("#drop-area-file-name").html(name + " 正在上传, 请稍后...<br>(此界面可关闭)");
                 }
             }
         }
     }, false);
 
+    function upload_file_succeed(name) {
+        $("#upload-succeed").html("<strong>" + name + " 上传成功!</strong>");
+        $("#upload-succeed").fadeTo(2000, 500).slideUp(500, function () {
+            $(this).slideUp(500);
+        });
+    }
 </script>
 
 <script>

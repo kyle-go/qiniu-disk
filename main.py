@@ -48,6 +48,10 @@ def init():
     web_view.page().runJavaScript('set_keys("%s", "%s");' % (ak, sk))
 
 
+def upload_file_succeed(name):
+    web_view.page().runJavaScript('upload_file_succeed(' + '"' + name + '"' + ');')
+
+
 # js -> python
 class CallHandler(QObject):
     result = pyqtSignal(int)
@@ -149,7 +153,7 @@ class CallHandler(QObject):
     def upload_file_data(self, bucket, prefix, name, data):
         binary_data = bytearray()
         binary_data.extend(map(ord, data))
-        upload_bucket_file(ak, sk, bucket, prefix, name, binary_data)
+        upload_bucket_file(ak, sk, bucket, prefix, name, binary_data, upload_file_succeed)
         return "True"
 
 

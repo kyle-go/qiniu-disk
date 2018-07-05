@@ -5,6 +5,7 @@
 import json
 import base64
 import requests
+import threading
 from qiniu import Auth, urlsafe_base64_encode, put_data
 
 # 空间区域
@@ -114,9 +115,14 @@ def delete_bucket_file(ak, sk, bucket, name):
     return False, None
 
 
-# 上传文件
-def upload_bucket_file(ak, sk, bucket, prefix, name, data):
-    file_name = prefix + name
-    q = Auth(ak, sk)
-    token = q.upload_token(bucket, file_name, 3600)
-    put_data(token, file_name, data)
+# 上传文件(不能阻塞主线程)
+def upload_bucket_file(ak, sk, bucket, prefix, name, data, func):
+    def work_upload_file_data():
+        file_name = prefix + name
+        q = Auth(ak, sk)
+        token = q.upload_token(bucket, file_name, 3600)
+        put_data(token, file_name, data)
+        func(name)
+
+    t = threading.Thread(target=work_upload_file_data)
+    t.start()
