@@ -226,7 +226,7 @@
                         <i class="fa fa-cloud-upload event-patch"></i>
                     </p>
                     <p id="drop-area-tips" class="text-center event-patch">
-                        <span class="event-patch">拖拽文件到此处，或 <a href="#" onclick="" class="event-patch">点击上传</a></span>
+                        <span class="event-patch">拖拽文件(<=100MB)到此处，或 <a href="#" onclick="" class="event-patch">点击上传</a></span>
                     </p>
                     <p id="drop-area-will-upload" class="text-center event-patch" style="display: none;">
                         松开鼠标即开始上传
@@ -394,6 +394,13 @@
                 if (item.isDirectory) {
                     alert("暂不支持文件夹上传呢!");
                 } else {
+                    if (items[i].getAsFile().size > 100 * 1024 * 1024) {
+                        $("#drop-area-tips").show();
+                        $("#drop-area-will-upload").hide();
+                        $("#drop-area-file-name").hide();
+                        alert("为保障用户体验，不允许拖拽大小超过100MB的文件，请点击右侧[点击上传]。");
+                        return;
+                    }
                     var name = items[i].getAsFile().name;
                     var reader = new FileReader();
                     reader.onload = function () {
