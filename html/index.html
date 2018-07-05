@@ -133,6 +133,35 @@
             margin-top: 20px;
         }
 
+        /*上传文件 <a> 标签样式*/
+        .select-file {
+            position: relative;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 11px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+
+        .select-file input {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width:80px;
+            opacity: 0;
+        }
+
+        .select-file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+
     </style>
 </head>
 
@@ -230,7 +259,9 @@
                         <i class="fa fa-cloud-upload event-patch"></i>
                     </p>
                     <p id="drop-area-tips" class="text-center event-patch">
-                        <span class="event-patch">拖拽文件(<=100MB)到此处，或 <a href="#" onclick="" class="event-patch">点击上传</a></span>
+                        <span class="event-patch">拖拽文件(<=100MB)到此处，或
+                            <a class="event-patch select-file">点击上传<input type="file" id=""></a>
+                        </span>
                     </p>
                     <p id="drop-area-will-upload" class="text-center event-patch" style="display: none;">
                         松开鼠标即开始上传
@@ -402,7 +433,7 @@
                         $("#drop-area-tips").show();
                         $("#drop-area-will-upload").hide();
                         $("#drop-area-file-name").hide();
-                        alert("为保障用户体验，不允许拖拽大小超过100MB的文件，请点击右侧[点击上传]。");
+                        alert("为保障用户体验，不允许上传大小超过100MB的文件。");
                         return;
                     }
                     var name = items[i].getAsFile().name;
