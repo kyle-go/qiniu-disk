@@ -151,7 +151,7 @@
             position: absolute;
             right: 0;
             top: 0;
-            width:80px;
+            width: 80px;
             opacity: 0;
         }
 
@@ -464,6 +464,34 @@
             $(this).slideUp(500);
         });
     }
+
+    $(".select-file").on("change", "input[type='file']", function () {
+        var file = $(this)[0].files[0];
+        if (file.size > 100 * 1024 * 1024) {
+            $("#drop-area-tips").show();
+            $("#drop-area-will-upload").hide();
+            $("#drop-area-file-name").hide();
+            alert("为保障用户体验，不允许上传大小超过100MB的文件。");
+            return;
+        }
+        var name = file.name;
+        var reader = new FileReader();
+        reader.onload = function () {
+            //上传文件
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                channel.objects.handler.upload_file_data(cur_bucket_name, cur_bucket_prefix, name,
+                    reader.result, function (r) {
+                        console.log(r);
+                    });
+            });
+        };
+        reader.readAsBinaryString(file);
+
+        $("#drop-area-tips").hide();
+        $("#drop-area-will-upload").hide();
+        $("#drop-area-file-name").show();
+        $("#drop-area-file-name").html(name + " 正在上传, 请稍后...<br>(此界面可关闭)");
+    })
 </script>
 
 <script>
