@@ -4,6 +4,7 @@ import os
 import sys
 import threading
 
+import wget
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtSignal
@@ -58,8 +59,16 @@ def download_file(url, local_file):
     tmp_file = local_file + ".qiniu"
 
     def thread_download_file(url, tmp_file):
-        print(url, tmp_file)
-        pass
+        tmp_file = wget.download(url, tmp_file)
+        original_file = tmp_file[:tmp_file.rindex(".")]
+        os.rename(tmp_file, original_file)
+
+        # 更新文件下载状态，TODO 这里可能会crash，因为list并非是线程安全的
+        global download_task
+        for t in download_task:
+            if t['url'] == url:
+                t['status'] = 1
+                break
 
     t = threading.Thread(target=thread_download_file, args=(url, tmp_file))
     t.start()
