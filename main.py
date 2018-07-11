@@ -41,7 +41,7 @@ def init():
     # js -> python
 
     # 检查AccessKey和SecretKey
-    ak, sk = get_config()
+    ak, sk, _ = get_config()
     if ak is None:
         web_view.page().runJavaScript('show_setting_dialog();')
         return
@@ -58,10 +58,15 @@ class CallHandler(QObject):
 
     @pyqtSlot(str, str, result=str)
     def save_keys(self, ak1, sk1):
+        ak1 = ak1.replace(" ", "")
+        ak1 = ak1.replace("\t", "")
+        sk1 = sk1.replace(" ", "")
+        sk1 = sk1.replace("\t", "")
+
         global ak, sk
         ak = ak1
         sk = sk1
-        save_config(ak, sk)
+        save_config(ak, sk, "")
         return "save_keys. --by python."
 
     @pyqtSlot(result=str)
@@ -154,6 +159,17 @@ class CallHandler(QObject):
         binary_data = bytearray()
         binary_data.extend(map(ord, data))
         upload_bucket_file(ak, sk, bucket, prefix, name, binary_data, upload_file_succeed)
+        return "True"
+
+    @pyqtSlot(result=str)
+    def get_download_dir(self):
+        _, _, path = get_config()
+        return path
+
+    @pyqtSlot(str, result=str)
+    def set_download_dir(self, path):
+        if os.path.isdir(path):
+            save_config(ak, sk, path)
         return "True"
 
 
