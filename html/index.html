@@ -814,6 +814,7 @@
     }
 
     function new_bucket_bar(r) {
+        $(".bucket").html("");
         if (r === 'False') {
             alert("获取bucket失败，请检查AccessKey和SecretKey是否正确！");
             return;
