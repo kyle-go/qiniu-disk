@@ -11,3 +11,6 @@ python 3.6
 
 注册七牛账号
 [https://portal.qiniu.com/signup?code=3lnwla8yfl7wy](https://portal.qiniu.com/signup?code=3lnwla8yfl7wy)
+
+![](http://or9erg8ii.bkt.clouddn.com/nav-bar/1.png)
+![](http://or9erg8ii.bkt.clouddn.com/nav-bar/2.png)
