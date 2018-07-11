@@ -162,6 +162,7 @@
             text-decoration: none;
         }
 
+
     </style>
 </head>
 
@@ -189,8 +190,8 @@
         </ul>
         <form class="form-inline mt-2 mt-md-0">
             <!--<button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal"-->
-                    <!--data-target="#upload-list-modal">-->
-                <!--上传列表-->
+            <!--data-target="#upload-list-modal">-->
+            <!--上传列表-->
             <!--</button>-->
             <button class="btn btn-dark my-2 my-sm-0" type="button" data-toggle="modal"
                     data-target="#download-list-modal">
@@ -281,25 +282,25 @@
 </div>
 
 <!-- upload list Modal -->
-<div class="modal fade" id="upload-list-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">上传列表</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+<!--<div class="modal fade" id="upload-list-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"-->
+<!--aria-hidden="true">-->
+<!--<div class="modal-dialog" role="document">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h5 class="modal-title">上传列表</h5>-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--<span aria-hidden="true">&times;</span>-->
+<!--</button>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
 <!-- download list Modal -->
 <div class="modal fade" id="download-list-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -315,8 +316,9 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">下载目录:</label>
-                        <input type="text" class="form-control" id="download-folder" readonly="readonly">
+                        <!--<label for="recipient-name" class="form-control-label">下载目录:</label>-->
+                        <!--<input type="file" class="form-control" id="download-folder" readonly="readonly"-->
+                               <!--placeholder="请选择下载目录">-->
                     </div>
                 </form>
             </div>
@@ -500,6 +502,7 @@
         $("#drop-area-file-name").show();
         $("#drop-area-file-name").html(name + " 正在上传, 请稍后...<br>(此界面可关闭)");
     })
+
 </script>
 
 <script>
@@ -881,6 +884,7 @@
             });
         });
     }
+
 
 
 </script>
