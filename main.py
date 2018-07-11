@@ -2,6 +2,7 @@
 
 import os
 import sys
+import threading
 
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
@@ -20,6 +21,7 @@ cur_marker = ""
 cur_prefix = ""
 channel = None
 handler = None
+download_task = []
 
 
 def get_abspath():
@@ -52,6 +54,17 @@ def upload_file_succeed(name):
     web_view.page().runJavaScript('upload_file_succeed(' + '"' + name + '"' + ');')
 
 
+def download_file(url, local_file):
+    tmp_file = local_file + ".qiniu"
+
+    def thread_download_file(url, tmp_file):
+        print(url, tmp_file)
+        pass
+
+    t = threading.Thread(target=thread_download_file, args=(url, tmp_file))
+    t.start()
+
+
 # js -> python
 class CallHandler(QObject):
     result = pyqtSignal(int)
@@ -66,7 +79,7 @@ class CallHandler(QObject):
         global ak, sk
         ak = ak1
         sk = sk1
-        save_config(ak, sk, "")
+        save_config(ak, sk, os.path.join(os.path.expanduser('~'), 'Desktop/'))
         return "save_keys. --by python."
 
     @pyqtSlot(result=str)
@@ -145,6 +158,21 @@ class CallHandler(QObject):
 
     @pyqtSlot(str, result=str)
     def download_url(self, url):
+        global download_task
+
+        # 判断此任务是否已经存在
+        for t in download_task:
+            if t['url'] == url:
+                return "False"
+
+        # 截取文件名，拼接出本地文件路径
+        file_name = url.split("/")[-1]
+        _, _, save_dir = get_config()
+        save_file = save_dir + file_name
+
+        # 添加到任务列表
+        download_task.append({"url": url, "file": save_file, "status": 0})
+        download_file(url, save_file)
         return "True"
 
     @pyqtSlot(str, str, result=str)
@@ -159,17 +187,6 @@ class CallHandler(QObject):
         binary_data = bytearray()
         binary_data.extend(map(ord, data))
         upload_bucket_file(ak, sk, bucket, prefix, name, binary_data, upload_file_succeed)
-        return "True"
-
-    @pyqtSlot(result=str)
-    def get_download_dir(self):
-        _, _, path = get_config()
-        return path
-
-    @pyqtSlot(str, result=str)
-    def set_download_dir(self, path):
-        if os.path.isdir(path):
-            save_config(ak, sk, path)
         return "True"
 
 
